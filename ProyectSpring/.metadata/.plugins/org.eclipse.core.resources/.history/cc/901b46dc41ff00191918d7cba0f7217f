@@ -1,0 +1,14 @@
+package Practica4Unnoba.repositorios;
+	
+	import org.springframework.data.jpa.repository.JpaRepository;
+	import Practica4Unnoba.Entidades.User;
+
+	import org.springframework.data.jpa.repository.Query;
+	import org.springframework.data.repository.query.Param;
+
+	public interface UsuarioRepository extends JpaRepository<User, Long> {
+		
+		@Query("select u from User u where u.username = :username")
+		public User findUserByUsername(@Param("username") String username); 
+		
+	}

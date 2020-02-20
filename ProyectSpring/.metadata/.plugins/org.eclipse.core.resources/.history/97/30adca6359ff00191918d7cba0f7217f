@@ -1,0 +1,19 @@
+package Practica4Unnoba.Servicios;
+
+import java.util.List;
+
+import Practica4Unnoba.repositorios.InviteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Service;
+import Practica4Unnoba.Entidades.Invite;
+
+public class InviteServicios {
+
+	
+	public void addUser(Invite invite) {
+	    inviteRepository.save(user);
+	    
+	public void deleteUser(@PathVariable Long id) {
+		inviteRepository.deleteById(id);
+}

@@ -1,0 +1,7 @@
+package Practica4Unnoba.repositorios;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+
+public class EventRepository {
+
+}

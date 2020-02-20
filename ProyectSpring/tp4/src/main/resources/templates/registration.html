@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Registration | [[${event.name}]]</title>
+<style>
+.container {
+	margin: 5px auto;
+	padding: 10px;
+	border: 1px solid #000;
+}
+
+.section {
+	margin: 10px auto;
+	padding: 5px;
+	border: 1px solid #000;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+form {
+	display: inline-block;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<h2 th:text="'Registration ' + ${event.name}"></h2>
+	<div class="section">
+		<h2 th:text="${event.name}"></h2>
+		<p th:text="'Event Date: ' + ${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></p>
+		<p th:text="'Start Registrations: ' + ${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}"></p>
+		<p th:text="'End Registrations: ' + ${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}"></p>
+		<p th:text="'Place: ' + ${event.place}"></p>
+		<p th:text="'Capacity: ' + ${event.capacity}"></p>
+		<p th:text="'Space Available: ' + ${numberOfRegistrations}"></p>
+		<p th:text="'Cost: ' + (${event.cost > 0} ? ${event.cost} : 'Free')"></p>
+		<p th:text="'Private / Public: ' + (${event.privateEvent} ? 'Private' : 'Public')"></p>
+	</div>
+	<form action="#" th:action="@{/add-registration/{id}(id=${event.id})}" th:object="${registation}" method="post">
+		<input type="submit" value="Registration">
+	</form>
+</div>
+</body>
+</html>

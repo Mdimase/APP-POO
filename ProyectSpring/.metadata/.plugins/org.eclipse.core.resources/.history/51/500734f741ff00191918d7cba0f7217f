@@ -1,0 +1,54 @@
+package Practica4Unnoba.Servicios;
+
+import java.util.List;
+
+import Practica4Unnoba.repositorios.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
+
+import Practica4Unnoba.Entidades.User;
+
+@Service
+public class UserServicios {
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
+	public List<User> retrieveAllUsers() {
+		return usuarioRepository.findAll();
+	}
+	
+	public void addUser(User usuario) {
+	    usuarioRepository.save(usuario);
+	}
+	
+	public User getUser(Long id) {
+	    return usuarioRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
+	}
+	
+	public User replaceUser(User usuario, Long id) {
+	    return usuarioRepository.findById(id)
+	      .map(u -> {
+	        u.setEmail(usuario.getEmail());
+	        u.setPassword(usuario.getPassword());
+	        u.setFirstName(usuario.getFirstName());
+	        u.setLastName(usuario.getLastName());
+	        return usuarioRepository.save(u);
+	      })
+	      .orElseGet(() -> {
+	        return usuarioRepository.save(usuario);
+	      });
+	}
+
+	public void deleteUser(@PathVariable Long id) {
+		usuarioRepository.deleteById(id);
+	}
+	
+	public User findUserByUsername(String username) {
+		return usuarioRepository.findUserByUsername(username);
+	}
+	
+}

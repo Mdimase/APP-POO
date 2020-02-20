@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<libraryInfos>
+<libraryInfo home="E:\Juani\Archivo de Programas\java" version="1.8.0_231">
+<bootpath>
+<entry path="E:\Juani\Archivo de Programas\java\lib\resources.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\lib\rt.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\lib\sunrsasign.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\lib\jsse.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\lib\jce.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\lib\charsets.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\lib\jfr.jar"/>
+<entry path="E:\Juani\Archivo de Programas\java\classes"/>
+</bootpath>
+<extensionDirs>
+<entry path="E:\Juani\Archivo de Programas\java\lib\ext"/>
+<entry path="C:\WINDOWS\Sun\Java\lib\ext"/>
+</extensionDirs>
+<endorsedDirs>
+<entry path="E:\Juani\Archivo de Programas\java\lib\endorsed"/>
+</endorsedDirs>
+</libraryInfo>
+</libraryInfos>

@@ -1,0 +1,42 @@
+package Practica4Unnoba.Controllers;
+
+import Practica4Unnoba.Servicios.EventServicios;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import Practica4Unnoba.Entidades.Event;
+
+@RestController
+public class EventoController {
+	@Autowired
+	private EventServicios eventServicios;
+	
+	@PostMapping("/events")
+	public void addEvent (@RequestBody Event event) {
+		eventServicios.addEvent(event);
+	}
+	
+	@GetMapping("/events/{id}")
+	public Event getEvent(@PathVariable Long id) {
+		return eventServicios.getEvent(id);
+	}
+	
+	
+	@DeleteMapping("/events/{id}")
+		void deleteEvent(@PathVariable Long id) {
+			eventServicios.deleteEvent(id);
+		}
+	
+	@PutMapping("/events/{id}")	
+	public Event replaceEvent(@RequestBody Event event , @PathVariable Long id) {
+		return eventServicios.modificarEvent(event , id);
+	}
+
+	
+}

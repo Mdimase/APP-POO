@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title th:inline="text">Info | [[${event.name}]]</title>
+<style>
+.container {
+	margin: 5px auto;
+	padding: 10px;
+	border: 1px solid #000;
+}
+
+.section {
+	margin: 10px auto;
+	padding: 5px;
+	border: 1px solid #000;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+form {
+	display: inline-block;
+}
+
+table {
+	margin: auto;
+}
+
+table, td {
+	text-align: center;
+	border: 1px solid #000;
+}
+
+td {
+	padding: 5px;
+}
+</style>
+</head>
+<body>
+<a href="/home">Home</a>
+<h1>Info</h1>
+<div class="container">
+	<div class="section">
+		<h2 th:text="${event.name}"></h2>
+		<p th:text="'Event Date: ' + ${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></p>
+		<p th:text="'Start Registrations: ' + ${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}"></p>
+		<p th:text="'End Registrations: ' + ${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}"></p>
+		<p th:text="'Place: ' + ${event.place}"></p>
+		<p th:text="'Capacity: ' + ${event.capacity}"></p>
+		<p th:text="'Space Available: ' + ${spaceAvailable}"></p>
+		<p th:text="'Cost: ' + (${event.cost > 0} ? ${event.cost} : 'Free')"></p>
+		<p th:text="'Private / Public: ' + (${event.privateEvent} ? 'Private' : 'Public')"></p>
+	</div>
+	
+	<div class="section">
+		<h2>Registrations</h2>
+		<div th:switch="${#lists.size(registrations)}">
+			<h3 th:case="'0'">No registrations yet!</h3>
+			<table th:case="*">
+				<thead>
+					<tr>
+						<th>User Name</th>
+						<th>Registered At</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="registration : ${registrations}">
+						<td th:text="${registration.user.lastName} + ' ' + ${registration.user.firstName}"></td>
+						<td th:text="${registration.createdAt}"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!--  
+	<div class="section">
+		<h2>Invitations</h2>
+	</div>
+	-->
+	<form action="#" th:action="@{/events/edit/{id}(id=${event.id})}" method="get">
+		<input type="submit" value="Edit">
+	</form>
+	<form action="#" th:action="@{/events/{id}(id=${event.id})}" method="post">
+		<input type="submit" value="Delete">
+	</form>
+	<form action="#" th:action="@{/myevents}" method="get">
+		<input type="submit" value="My Events">
+	</form>
+</div>
+</body>
+</html>

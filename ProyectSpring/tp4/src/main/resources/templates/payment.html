@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Payment</title>
+<style>
+div {
+	padding: 10px;
+}
+</style>
+</head>
+
+<body>
+<h1>Payment</h1>
+<form action="#" th:action="@{/payment/}" th:object="${payment}" method="post">
+	<div>
+		<label for="card">Card</label>
+		<input type="text" th:field="*{card}" id="card">
+ 	</div>
+	
+	<div>
+		<label for="cardNumber">Card Number</label>
+		<input type="text" th:field="*{cardNumber}" id="cardNumber">
+	</div>
+	<input th:type="hidden" name="event" id="event" th:field="*{event}" />
+	<button type="submit">Pagar</button>
+</form>
+</body>
+</html>

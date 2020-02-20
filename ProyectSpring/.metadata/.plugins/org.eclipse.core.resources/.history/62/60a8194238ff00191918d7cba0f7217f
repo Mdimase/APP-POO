@@ -1,0 +1,47 @@
+package Practica4Unnoba.Controllers;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import ar.edu.unnoba.poo.practica4.services.UserService;
+
+import Practica4Unnoba.Entidades.Usuario;
+
+@RestController
+public class UsuarioController {
+
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	@GetMapping("/usuarios")
+	public List<Usuario> retrieveAllUsers() {
+		return usuarioService.retrieveAllUsers();
+	}
+	
+	@PostMapping("/users")
+	public void addUser(@RequestBody Usuarios usuario) {
+		usuarioService.addUser(usuario);
+	}
+	
+	@GetMapping("/users/{id}")
+	public Usuario getUser(@PathVariable Long id) {
+	    return usuarioService.getUser(id);
+	}
+	
+	@PutMapping("/users/{id}")
+	public Usuario replaceUser(@RequestBody Usuario usuario, @PathVariable Long id) {
+	    return usuarioService.replaceUser(usuario, id);
+	}
+
+	  @DeleteMapping("/users/{id}")
+	  void deleteUser(@PathVariable Long id) {
+		  usuarioService.deleteUser(id);
+	  }
+}

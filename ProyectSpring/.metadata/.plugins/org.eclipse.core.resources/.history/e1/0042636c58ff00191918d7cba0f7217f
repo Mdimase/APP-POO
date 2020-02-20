@@ -1,0 +1,41 @@
+package Practica4Unnoba.Servicios;
+import Practica4Unnoba.repositorios.EventRepository;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import Practica4Unnoba.Entidades.Event;
+
+@Service
+public class EventServicios {
+	
+	@Autowired
+	private EventRepository eventRepository;
+	
+	
+	public void addEvent (Event event) {
+		eventRepository.save(event);
+	}
+	
+	public Event getEvent (Long id) {
+		return eventRepository.buscarxid(id);
+	}
+	
+	public void deleteEvent(@PathVariable Long id) {
+		return eventRepository.eliminar(id);
+	}
+	public Event modificarEvent(Event event ,Long id) {
+		.map(ev -> {
+			ev.seteventDate(event.getEventDate());
+			ev.setStartRegistrations(event.getStartRegistrations());
+			ev.setEndRegistrations(event.getEndRegistration());
+			ev.setCapacity(event.getCapacity());
+			ev.setCost(event.getCost());
+			ev.setPrivateEvent(event.isPrivateEvent());
+			return eventRepository.save(ev);
+		})
+		.orElseGet(() -> {
+			return eventRepository.save(event);
+		});
+	}
+}

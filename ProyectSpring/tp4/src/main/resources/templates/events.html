@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Events</title>
+</head>
+<style>
+h1 {
+	text-align:center;
+}
+
+table, th, td {
+	margin: auto;
+	width: 1280px;
+	border: 1px solid #000;
+}
+
+table {
+	text-align: center;
+}
+</style>
+<body>
+<a href="/home">Home</a>
+<h1>Events</h1>
+<div th:switch="${#lists.size(events)}">
+	<h2 th:case="'0'">No events yet!</h2>
+	<div th:case="*">
+		<table>
+			<thead>
+				<tr>
+					<!-- <th>ID</th> -->
+					<!-- <th>Owner</th> -->
+					<th>Name</th>
+					<th>Date Event</th>
+					<th>Start Registrations</th>
+					<th>End Registrations</th>
+					<th>Place</th>
+					<th>Space Available</th>
+					<th>Capacity</th>
+					<th>Cost</th>
+					<th>Private / Public</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="event : ${events}">
+					<!-- <td th:text="${event.id}"></td> -->
+					<!-- <td th:text="${event.owner.username}"></td> -->
+					<td th:text="${event.name}"></td>
+					<td th:text="${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></td>
+					<td th:text="${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}"></td>
+					<td th:text="${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}"></td>
+					<td th:text="${event.place}"></td>
+					<td></td> <!-- Space Available -->
+					<td th:text="${event.capacity}"></td>
+					<td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
+					<td th:text="${event.privateEvent} ? 'Private' : 'Public' "></td>
+					<td><a th:href="@{/events/registration/{id}(id=${event.id})}">Registration</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

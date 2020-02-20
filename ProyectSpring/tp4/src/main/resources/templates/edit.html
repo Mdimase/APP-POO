@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title th:inline="text">Edit | [[${event.name}]]</title>
+<style>
+.container {
+	margin: 5px auto;
+	padding: 10px;
+	border: 1px solid #000;
+}
+
+h1, h2 {
+	text-align: center;
+}
+
+div {
+	padding: 5px;
+}
+
+input[type="text"], input[type="date"], input[type="number"] {
+	width: 100%;
+}
+</style>
+</head>
+<body>
+<a href="/home">Home</a>
+<h1>Edit Event</h1>
+<div class="container">
+	<form action="#" th:action="@{/events/{id}(id=${event.id})}" th:object="${event}" method="get">
+		<div>
+			<label for="name">Name</label>
+			<input type="text" th:field="*{name}" id="name" value="${event.name}">
+			<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+	 	</div>
+	 	
+	 	<div>
+			<label for="eventDate">Event Date</label>
+			<input type="date" th:field="*{eventDate}" id="eventDate" value="${event.eventDate}">
+		</div>
+		
+		<div>  
+			<label for="startRegistration">Start Registrations</label>
+			<input type="date" th:field="*{startRegistrations}" id="startRegistrations" value="${event.startRegistrations}">
+		</div>
+		
+		<div>
+			<label for="endRegistration">End Registrations</label>
+			<input type="date" th:field="*{endRegistrations}" id="endRegistrations" value="${event.endRegistrations}">
+		</div>
+		
+		<div>
+			<label for="place">Place</label>
+			<input type="text" th:field="*{place}" id="place" value="${event.place}">
+			<span th:if="${#fields.hasErrors('place')}" th:errors="*{place}"></span>
+		</div>
+		
+		<div>
+			<label for="capacity">Capacity</label>
+			<input type="number" min="1" th:field="*{capacity}" id="capacity" value="${event.capacity}">
+		</div>
+		
+		<div>
+			<label for="cost">Cost</label>
+			<input type="number" th:field="*{cost}" id="cost" value="${event.cost}">
+			<span th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}"></span>
+		</div>
+		
+		<div>
+			<label for="privateEvent">Private / Public</label>
+			<input type="checkbox" th:field="*{privateEvent}" id="privateEvent" value="${event.privateEvent}">
+		</div>	
+		
+		<input type="submit" value="Edit Event">
+	</form>
+</div>
+</body>
+</html>

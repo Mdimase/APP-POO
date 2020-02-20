@@ -1,0 +1,30 @@
+package Practica4Unnoba.Controllers;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import org.springframework.web.bind.annotation.PutMapping;
+
+import Practica4Unnoba.Servicios.InviteServicios;
+@RestController
+public class InviteController {
+	
+	@Autowired
+	private InviteServicios inviteServicios;
+
+	@DeleteMapping("/invites/{id}")
+	void deleteInvite(@PathVariable Long id) {
+		inviteServicios.deleteEvent(id);
+	}	
+	@PostMapping("/invites")
+	public void addInvite (@RequestBody Invite invite) {
+		inviteServicios.addInvite(invite);
+	}
+	
+	
+}
