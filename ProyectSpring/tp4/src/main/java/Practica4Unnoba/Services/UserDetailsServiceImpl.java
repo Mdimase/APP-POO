@@ -12,15 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.User;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import Practica4Unnoba.Entities.Usuario;
 
 import java.util.NoSuchElementException;
 
-@Component
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 	
+	//inyeccion de dependencia
 	@Autowired
 	private UserService userService;
 	
@@ -30,7 +31,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	try { 
     		Usuario u = userService.findUserByUsername(username);
     		
-    		List grantedAuthorities = new ArrayList();
+    		//lista de roles de usuario
+    		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
     		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(u.getRole());
     		grantedAuthorities.add(grantedAuthority);
     		
