@@ -14,4 +14,7 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 
 	@Query("select e from Event e where e.owner = :owner order by e.eventDate")
 	public List<Event> findAllEventByOwner(@Param("owner") Usuario user);
+	
+	@Query("select e from Event e order by e.eventDate")
+	public List<Event> findAllEventsOrderByEventDate();
 }

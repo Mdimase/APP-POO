@@ -1,9 +1,6 @@
 package Practica4Unnoba.Entities;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -14,8 +11,6 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
-import Practica4Unnoba.Services.EventService;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;

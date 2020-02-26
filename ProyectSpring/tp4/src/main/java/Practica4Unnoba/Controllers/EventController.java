@@ -1,27 +1,16 @@
 package Practica4Unnoba.Controllers;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.apache.tomcat.jni.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-
 import Practica4Unnoba.Entities.Event;
 import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
@@ -59,9 +48,8 @@ public class EventController {
 	
 	
 	@GetMapping("/events/")
-	public String findAllEvents(Model model){
-		List<Event> events = eventService.findAllEvents();
-		
+	public String findAllEventsOrderByDate(Model model){
+		List<Event> events = eventService.findAllEventsOrderByDate();
 		model.addAttribute("events", events);
 		
 		return "events";
