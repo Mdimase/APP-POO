@@ -2,6 +2,7 @@ package Practica4Unnoba.Entities;
 
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,9 +16,11 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
+	@Column(unique = true)
 	@NotBlank(message = "User Name is required")
 	private String username;
 	
+	@Column(unique = true)
 	@NotBlank(message = "Email is required")
 	private String email;
 	

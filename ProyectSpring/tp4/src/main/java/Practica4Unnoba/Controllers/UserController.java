@@ -1,10 +1,13 @@
 package Practica4Unnoba.Controllers;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 
@@ -13,10 +16,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import Practica4Unnoba.Entities.Usuario;
@@ -35,34 +41,31 @@ public class UserController {
 	
 	@PostMapping("/adduser")
 	public String addUser(@Valid Usuario usuario, BindingResult result, Model model) {
-		 if (result.hasErrors()) {
+		//errores en la validacion de formulario
+		if (result.hasErrors()) {
 			 return "add-user";
 	     }
 		 
-		 /*
-		  * Encriptación y seteo de la clave al usuario que se registra.
-		  */
+		 //Encriptación y seteo de la clave al usuario que se registra.
 		 BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 		 String passwordEncrypted = bCryptPasswordEncoder.encode(usuario.getPassword());
 		 usuario.setPassword(passwordEncrypted);
 		 
-		 userService.addUser(usuario);
-		 
-		 //System.out.println("usernane = " + usuario.getUsername() + ", password = " + usuario.getPassword() + ", fistname = " + usuario.getFirstName() + ", lastname = " + usuario.getLastName());
-		 
-	     return "index";
+		 //restriccion email y username duplicados no los acepto
+		 if(userService.findUserByUsername(usuario.getUsername())==null && userService.findUserByEmail(usuario.getEmail())==null) {
+			 userService.addUser(usuario);
+		 }
+		 else {
+			 System.out.println("CK Violation");
+		 }
+		 return "index";
 	}
 	
 	@GetMapping("/users")
 	public List<Usuario> retrieveAllUsers() {
 		return userService.retrieveAllUsers();
 	}
-	/*
-	@PostMapping("/users")
-	public void addUser(@RequestBody Usuario user) {
-		userService.addUser(user);
-	}
-	*/
+	
 	@GetMapping("/users/edit/{id}")
 	public Usuario getUser(@PathVariable Long id) {
 	    return userService.getUserById(id);
