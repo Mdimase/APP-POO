@@ -62,13 +62,8 @@ public class RegistrationController {
 	
 	@PostMapping("/add-registration/{id}")
 	public String addRegistration(@Valid Registration registration, @PathVariable Long id,  BindingResult bindingResult,Model model) {
-		/*
-		 * Obtengo el usuario logueado, para recuperar los eventos creados por él.
-		 */
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails loggedUser = (UserDetails) principal;
-		String username = loggedUser.getUsername();
-		Usuario user = userService.findUserByUsername(username);
+		//obtengo el usuario logueado
+		Usuario user = userService.getUser();
 		
 		registration.setUser(user);
 		
@@ -88,6 +83,7 @@ public class RegistrationController {
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
 			if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(id)) {
+				System.out.println(registration.getEvent().getId()+"\n"+registration.getUser());
 				//usuario no registrado en el evento
 				if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
 					//hay lugares libres
@@ -130,7 +126,7 @@ public class RegistrationController {
 	
 	@PostMapping("/registrations")
 	public void addRegistration(@RequestBody Registration registration) {
-		Usuario u = userService.getUser(registration.getUser().getId());
+		Usuario u = userService.getUserById(registration.getUser().getId());
 		registration.setUser(u);
 		Event e = eventService.getEvent(registration.getEvent().getId());
 		registration.setEvent(e);

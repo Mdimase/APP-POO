@@ -65,7 +65,7 @@ public class UserController {
 	*/
 	@GetMapping("/users/edit/{id}")
 	public Usuario getUser(@PathVariable Long id) {
-	    return userService.getUser(id);
+	    return userService.getUserById(id);
 	}
 	
 	@PutMapping("/users/update/{id}")

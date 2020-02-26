@@ -3,6 +3,8 @@ package Practica4Unnoba.Services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +27,7 @@ public class UserService {
 	    userRepository.save(user);
 	}
 	
-	public Usuario getUser(Long id) {
+	public Usuario getUserById(Long id) {
 	    return userRepository.findById(id).orElseThrow(() -> new NoSuchElementException());
 	}
 	
@@ -49,6 +51,17 @@ public class UserService {
 	
 	public Usuario findUserByUsername(String username) {
 		return userRepository.findUserByUsername(username);
+	}
+	
+	public Usuario findUserByEmail(String email) {
+		return userRepository.findUserbyEmail(email);
+	}
+	
+	//Obtengo el usuario logueado
+	public Usuario getUser() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		UserDetails loggedUser = (UserDetails) principal;
+		return findUserByEmail(loggedUser.getUsername());		//tener en cuenta que principal guarda como username el email del login
 	}
 	
 }

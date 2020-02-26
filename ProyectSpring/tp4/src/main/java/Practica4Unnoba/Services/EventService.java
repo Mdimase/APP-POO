@@ -30,7 +30,7 @@ public class EventService {
 	
 	
 	public List<Event> findAllEventByOwnerID(long UserID){
-		return eventRepository.findAllEventByOwner(userService.getUser(UserID));
+		return eventRepository.findAllEventByOwner(userService.getUserById(UserID));
 	}
 	
 	public void addEvent (Event event) {
@@ -42,11 +42,6 @@ public class EventService {
 	}
 	
 	public void deleteEvent(@PathVariable Long id) {
-		/*
-		if(registrationService.quantityOfRegistrationByEvent(id) == 0) {
-			eventRepository.deleteById(id);
-		}
-		*/
 		eventRepository.deleteById(id);
 	}
 	

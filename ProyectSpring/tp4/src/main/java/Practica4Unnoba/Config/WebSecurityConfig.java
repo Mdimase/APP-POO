@@ -31,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .formLogin()
                 .loginPage("/login")			//esta ruta tiene acceso publico, donde se loguean los usuarios
+                .usernameParameter("email")		//me logueo con email, en lugar de username(por default)
                 .permitAll()
                 .and()
             .logout()

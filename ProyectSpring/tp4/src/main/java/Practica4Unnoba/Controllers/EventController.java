@@ -43,13 +43,8 @@ public class EventController {
 	
 	@GetMapping("/myevents")
 	public String findAllMyEvents(Model model) {
-		/*
-		 * Obtengo el usuario logueado, para recuperar los eventos creados por él.
-		 */
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails loggedUser = (UserDetails) principal;
-		String username = loggedUser.getUsername();
-		Usuario user = userService.findUserByUsername(username);
+		//obtengo el usuario logueado
+		Usuario user = userService.getUser();
 		
 		List<Event> events = eventService.findAllEventByOwnerID(user.getId());
 		model.addAttribute("events", events);
@@ -98,13 +93,8 @@ public class EventController {
 		if (result.hasErrors()) {
 			return "add-event";
 	    }
-		/*
-		 * Obtengo el usuario logueado, para recuperar los eventos creados por él.
-		 */
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails loggedUser = (UserDetails) principal;
-		String username = loggedUser.getUsername();
-		Usuario user = userService.findUserByUsername(username);
+		//obtengo el usuario logueado
+		Usuario user = userService.getUser();
 		
 		event.setOwner(user);
 		eventService.addEvent(event);
@@ -114,13 +104,8 @@ public class EventController {
 	
 	@PostMapping("/events/{id}")
 	public String deleteEvent(@PathVariable Long id, Model model) {
-		/*
-		 * Obtengo el usuario logueado, para recuperar los eventos creados por él.
-		 */
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails loggedUser = (UserDetails) principal;
-		String username = loggedUser.getUsername();
-		Usuario user = userService.findUserByUsername(username);
+		//obtengo el usuario logueado
+		Usuario user = userService.getUser();
 		
 		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
 				eventService.deleteEvent(id);
@@ -142,13 +127,8 @@ public class EventController {
 		if (result.hasErrors()) {
 			return "edit";
 	    }
-		/*
-		 * Obtengo el usuario logueado, para recuperar los eventos creados por él.
-		 */
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails loggedUser = (UserDetails) principal;
-		String username = loggedUser.getUsername();
-		Usuario user = userService.findUserByUsername(username);
+		//obtengo el usuario logueado
+		Usuario user = userService.getUser();
 		
 		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
 			eventService.updateEvent(event , id);

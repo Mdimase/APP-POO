@@ -9,6 +9,9 @@ import Practica4Unnoba.Entities.Usuario;
 	public interface UserRepository extends JpaRepository<Usuario, Long> {
 		
 		@Query("select u from Usuario u where u.username = :username")
-		public Usuario findUserByUsername(@Param("username") String username); 
+		public Usuario findUserByUsername(@Param("username") String username);
+
+		@Query("select u from Usuario u where u.email = :email")
+		public Usuario findUserbyEmail(@Param("email")String email); 
 		
 	}

@@ -51,10 +51,8 @@ public class PaymentController {
 		System.out.println("----------------" + payment.getCard());
 		System.out.println("----------------" + Long.valueOf((String)result.getFieldValue("event")));
 	
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		UserDetails loggedUser = (UserDetails) principal;
-		String username = loggedUser.getUsername();
-		Usuario user = userService.findUserByUsername(username);
+		//obtengo el usuario logueado
+		Usuario user = userService.getUser();
 		
 		Registration r = new Registration();
 		r.setUser(user);

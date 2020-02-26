@@ -26,19 +26,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	private UserService userService;
 	
 	@Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
  
     	try { 
-    		Usuario u = userService.findUserByUsername(username);
+    		Usuario u = userService.findUserByEmail(email);
     		
     		//lista de roles de usuario
     		List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
     		GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(u.getRole());
     		grantedAuthorities.add(grantedAuthority);
     		
-    		UserDetails user = (UserDetails) new User(u.getUsername(), u.getPassword(), grantedAuthorities);
+    		UserDetails user = (UserDetails) new User(u.getEmail(), u.getPassword(), grantedAuthorities);
     		
-    		System.out.println("username = " + user.getUsername() + " " + "password = " + user.getPassword());
+    		System.out.println(u.getEmail()+"\n"+u.getUsername());
+    		System.out.println("email = " + user.getUsername() + " " + "password = " + user.getPassword());
    
     		return user;
     	}	
