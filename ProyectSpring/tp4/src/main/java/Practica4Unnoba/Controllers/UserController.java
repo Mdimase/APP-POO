@@ -41,9 +41,10 @@ public class UserController {
 	
 	@PostMapping("/adduser")
 	public String addUser(@Valid Usuario usuario, BindingResult result, Model model) {
+		String view = "index";
 		//errores en la validacion de formulario
 		if (result.hasErrors()) {
-			 return "add-user";
+			view="add-user";
 	     }
 		 
 		 //Encriptación y seteo de la clave al usuario que se registra.
@@ -51,14 +52,17 @@ public class UserController {
 		 String passwordEncrypted = bCryptPasswordEncoder.encode(usuario.getPassword());
 		 usuario.setPassword(passwordEncrypted);
 		 
-		 //restriccion email y username duplicados no los acepto
+		 //restriccion acepto email y username no duplicados 
 		 if(userService.findUserByUsername(usuario.getUsername())==null && userService.findUserByEmail(usuario.getEmail())==null) {
 			 userService.addUser(usuario);
+			 view="index";
 		 }
 		 else {
 			 System.out.println("CK Violation");
+			 model.addAttribute("ckViolation",new Boolean(true));
+			 view="add-user";
 		 }
-		 return "index";
+		 return view;
 	}
 	
 	@GetMapping("/users")

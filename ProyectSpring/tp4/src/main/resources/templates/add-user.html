@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1>Add User</h1>
+<span th:if="${ckViolation == true}">ERROR:username/email already exists</span>
 <form action="#" th:action="@{/adduser}" th:object="${usuario}" method="post">
 	<label for="username">User Name</label>
 	<input type="text" th:field="*{username}" id="username" placeholder="User Name">
