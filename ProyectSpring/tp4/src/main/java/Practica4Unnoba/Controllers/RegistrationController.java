@@ -105,20 +105,21 @@ public class RegistrationController {
 			return view;
 		}
 		
-		/*
+		
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
 			Float cost = registration.getEvent().getCost();
 			//evento gratis
-			if(cost.equals(0.0)) {
-				
+			if(cost.equals(0.0f)) {
+				registrationService.addRegistration(registration);
+				return view;
 			}
 		}
 		//evento privado
 		else {
 			
 		}
-		*/
+		
 		/*
 		
 		//evento publico
