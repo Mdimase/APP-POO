@@ -58,7 +58,7 @@ public class UserService {
 	}
 	
 	//Obtengo el usuario logueado
-	public Usuario getUser() {
+	public Usuario getUserLogged() {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails loggedUser = (UserDetails) principal;
 		return findUserByEmail(loggedUser.getUsername());		//tener en cuenta que principal guarda como username el email del login

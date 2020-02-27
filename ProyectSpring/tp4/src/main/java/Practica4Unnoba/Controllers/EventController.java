@@ -33,7 +33,7 @@ public class EventController {
 	@GetMapping("/myevents")
 	public String findAllMyEvents(Model model) {
 		//obtengo el usuario logueado
-		Usuario user = userService.getUser();
+		Usuario user = userService.getUserLogged();
 		
 		List<Event> events = eventService.findAllEventByOwnerID(user.getId());
 		model.addAttribute("events", events);
@@ -82,7 +82,7 @@ public class EventController {
 			return "add-event";
 	    }
 		//obtengo el usuario logueado
-		Usuario user = userService.getUser();
+		Usuario user = userService.getUserLogged();
 		
 		event.setOwner(user);
 		eventService.addEvent(event);
@@ -93,7 +93,7 @@ public class EventController {
 	@PostMapping("/events/{id}")
 	public String deleteEvent(@PathVariable Long id, Model model) {
 		//obtengo el usuario logueado
-		Usuario user = userService.getUser();
+		Usuario user = userService.getUserLogged();
 		
 		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
 				eventService.deleteEvent(id);
@@ -116,7 +116,7 @@ public class EventController {
 			return "edit";
 	    }
 		//obtengo el usuario logueado
-		Usuario user = userService.getUser();
+		Usuario user = userService.getUserLogged();
 		
 		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
 			eventService.updateEvent(event , id);

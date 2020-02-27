@@ -52,7 +52,7 @@ public class PaymentController {
 		System.out.println("----------------" + Long.valueOf((String)result.getFieldValue("event")));
 	
 		//obtengo el usuario logueado
-		Usuario user = userService.getUser();
+		Usuario user = userService.getUserLogged();
 		
 		Registration r = new Registration();
 		r.setUser(user);
