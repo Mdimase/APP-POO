@@ -28,8 +28,8 @@ public class EventService {
 		return eventRepository.findAllEventsOrderByEventDate();
 	}
 	
-	public List<Event> findAllEventByOwnerID(long UserID){
-		return eventRepository.findAllEventByOwner(userService.getUserById(UserID));
+	public List<Event> findAllEventByOwnerIdOrderByDate(long UserID){
+		return eventRepository.findAllEventByOwnerOrderByDate(userService.getUserById(UserID));
 	}
 	
 	public void addEvent (Event event) {

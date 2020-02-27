@@ -1,5 +1,6 @@
 package Practica4Unnoba.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -35,8 +36,17 @@ public class EventController {
 		//obtengo el usuario logueado
 		Usuario user = userService.getUserLogged();
 		
-		List<Event> events = eventService.findAllEventByOwnerID(user.getId());
+		List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
 		model.addAttribute("events", events);
+		
+		//calculo los espacios disponibles de cada evento y los guardo en un array
+			ArrayList<Integer> spacesAvailables = new ArrayList<Integer>();
+			for (Event e:events) {
+				int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(e.getId());
+				int spaceAvailable = (e.getCapacity() - numberOfRegistrations);
+				spacesAvailables.add(spaceAvailable);
+				}
+			model.addAttribute("spacesAvailables",spacesAvailables);
 		
 		return "my-events";
 	}
@@ -51,6 +61,15 @@ public class EventController {
 	public String findAllEventsOrderByDate(Model model){
 		List<Event> events = eventService.findAllEventsOrderByDate();
 		model.addAttribute("events", events);
+		
+		//calculo los espacios disponibles de cada evento y los guardo en un array
+		ArrayList<Integer> spacesAvailables = new ArrayList<Integer>();
+		for (Event e:events) {
+			int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(e.getId());
+			int spaceAvailable = (e.getCapacity() - numberOfRegistrations);
+			spacesAvailables.add(spaceAvailable);
+		}
+		model.addAttribute("spacesAvailables",spacesAvailables);
 		
 		return "events";
 	}
@@ -98,7 +117,7 @@ public class EventController {
 		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
 				eventService.deleteEvent(id);
 				
-				List<Event> events = eventService.findAllEventByOwnerID(user.getId());
+				List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
 				model.addAttribute("events", events);
 				
 				return "my-events";
@@ -121,7 +140,7 @@ public class EventController {
 		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
 			eventService.updateEvent(event , id);
 			
-			List<Event> events = eventService.findAllEventByOwnerID(user.getId());
+			List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
 			model.addAttribute("events", events);
 			
 			return "my-events";

@@ -45,7 +45,7 @@ table {
 					<td th:text="${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}"></td>
 					<td th:text="${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}"></td>
 					<td th:text="${event.place}"></td>
-					<td></td> <!-- Space Available -->
+					<td th:text="${spacesAvailables[eventStat.index]}"></td> 
 			        <td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
 					<td th:text="${event.privateEvent} ? 'Private' : 'Public'"></td>
 					<td><a th:href="@{/events/info/{id}(id=${event.id})}">Info</a></td>
