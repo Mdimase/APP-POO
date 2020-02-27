@@ -40,41 +40,30 @@ public class RegistrationController {
 		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(id);
 		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
 		
-		/*
-		System.out.println("Capacity: " + event.getCapacity());
-		System.out.println("Num. of registrations: " + numberOfRegistrations);
-		System.out.println("Space available: " + spaceAvailable);
-		*/
-		
-		model.addAttribute("numberOfRegistrations", spaceAvailable);
+		model.addAttribute("spaceAvailable", spaceAvailable);
 		model.addAttribute("event", event);
 		
 		return "registration";
 	}
 	
 	@PostMapping("/add-registration/{id}")
-	public String addRegistration(@Valid Registration registration, @PathVariable Long id,  BindingResult bindingResult,Model model) {
+	public String addRegistration(@Valid Registration registration, @PathVariable Long idEvento,  BindingResult bindingResult,Model model) {
 		//obtengo el usuario logueado
 		Usuario user = userService.getUserLogged();
 		
 		registration.setUser(user);
 		
-		Event event = eventService.getEvent(id);
+		Event event = eventService.getEvent(idEvento);
 		registration.setEvent(event);
 		
 		Date date = new Date();
 		registration.setCreatedAt(date);
 		
-		/*
-		System.out.println("Event date: " + e.getEventDate() + ", Start registrations: " + e.getStartRegistrations() + ", End registrations: " + e.getEndRegistrations());
-		System.out.println("Created at: " + date);
-		*/
-		
 		String view = "home";
 		
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
-			if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(id)) {
+			if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(idEvento)) {
 				System.out.println(registration.getEvent().getId()+"\n"+registration.getUser());
 				//usuario no registrado en el evento
 				if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
@@ -101,7 +90,7 @@ public class RegistrationController {
 							//registrationService.addRegistration(registration);
 							System.out.println("No tiene pago " + registration.getId());
 							Payment p = new Payment();
-							p.setEvent(id);
+							p.setEvent(idEvento);
 							model.addAttribute("payment", p);
 							view = "payment";
 							//return "home";

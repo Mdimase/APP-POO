@@ -35,7 +35,7 @@ form {
 		<p th:text="'End Registrations: ' + ${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}"></p>
 		<p th:text="'Place: ' + ${event.place}"></p>
 		<p th:text="'Capacity: ' + ${event.capacity}"></p>
-		<p th:text="'Space Available: ' + ${numberOfRegistrations}"></p>
+		<p th:text="'Space Available: ' + ${spaceAvailable}"></p>
 		<p th:text="'Cost: ' + (${event.cost > 0} ? ${event.cost} : 'Free')"></p>
 		<p th:text="'Private / Public: ' + (${event.privateEvent} ? 'Private' : 'Public')"></p>
 	</div>

@@ -83,7 +83,7 @@ public class EventController {
 		return "edit";
 	}
 	
-	@PostMapping("/events/")
+	@PostMapping("/addevent/")
 	public String addEvent(@Valid Event event, BindingResult result, Model model) {
 		//errores de validacion de formulario
 		if (result.hasErrors()) {

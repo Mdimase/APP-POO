@@ -27,42 +27,42 @@ input[type="text"], input[type="date"], input[type="number"] {
 <a href="/home">Home</a>
 <h1>Add Event</h1>
 <div class="container">
-	<form action="#" th:action="@{/events/}" th:object="${event}" method="post">
+	<form action="#" th:action="@{/addevent/}" th:object="${event}" method="post">
 		<div>
 			<label for="name">Name</label>
-			<input type="text" th:field="*{name}" id="name">
+			<input type="text" th:field="*{name}" id="name" required>
 			<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
 	 	</div>
 	 	
 	 	<div>
 			<label for="eventDate">Event Date</label>
-			<input type="date" th:field="*{eventDate}" id="eventDate">
+			<input type="date" th:field="*{eventDate}" id="eventDate" required>
 		</div>
 		
 		<div>  
 			<label for="startRegistration">Start Registrations</label>
-			<input type="date" th:field="*{startRegistrations}" id="startRegistrations">
+			<input type="date" th:field="*{startRegistrations}" id="startRegistrations" required>
 		</div>
 		
 		<div>
 			<label for="endRegistration">End Registrations</label>
-			<input type="date" th:field="*{endRegistrations}" id="endRegistrations">
+			<input type="date" th:field="*{endRegistrations}" id="endRegistrations" required> 
 		</div>
 		
 		<div>
 			<label for="place">Place</label>
-			<input type="text" th:field="*{place}" id="place">
+			<input type="text" th:field="*{place}" id="place" required>
 			<span th:if="${#fields.hasErrors('place')}" th:errors="*{place}"></span>
 		</div>
 		
 		<div>
 			<label for="capacity">Capacity</label>
-			<input type="number" min="1" th:field="*{capacity}" id="capacity">
+			<input type="number" min="1" th:field="*{capacity}" id="capacity" required>
 		</div>
 		
 		<div>
 			<label for="cost">Cost</label>
-			<input type="number" th:field="*{cost}" id="cost">
+			<input type="number" th:field="*{cost}" id="cost" min="0" required>
 			<span th:if="${#fields.hasErrors('cost')}" th:errors="*{cost}"></span>
 		</div>
 		
