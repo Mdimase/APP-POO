@@ -1,5 +1,6 @@
 package Practica4Unnoba.Controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.validation.Valid;
@@ -47,42 +48,99 @@ public class RegistrationController {
 	}
 	
 	@PostMapping("/add-registration/{id}")
-	public String addRegistration(@Valid Registration registration, @PathVariable Long idEvento,  BindingResult bindingResult,Model model) {
-		//obtengo el usuario logueado
+	public String addRegistration(@Valid Registration registration, @PathVariable Long id,  BindingResult bindingResult,Model model) {
+		String view = "home";
+		//obtengo el evento al que se quieren inscribir
+		Event event = eventService.getEvent(id);
 		Usuario user = userService.getUserLogged();
+		Date date = new Date();
+		
+		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(id);
+		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
 		
 		registration.setUser(user);
-		
-		Event event = eventService.getEvent(idEvento);
 		registration.setEvent(event);
-		
-		Date date = new Date();
 		registration.setCreatedAt(date);
 		
-		String view = "home";
+		System.out.println(registrationService.isRegistered(registration.getEvent().getId(), user.getId()));
+		System.out.println(registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId()));
 		
+		//se quiere registrar el dueño a su propio evento
+		if(registration.getUser().equals(event.getOwner())) {
+			Boolean errorOwner = new Boolean(true);
+			model.addAttribute("errorOwner", errorOwner);
+			model.addAttribute("event", event);
+			model.addAttribute("spaceAvailable", spaceAvailable);
+			view="registration";
+			return view;
+		}
+		
+		//usuario que ya esta inscripto a este evento
+		if(registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
+			Boolean errorAlreadyRegister = new Boolean(true);
+			model.addAttribute("errorAlreadyRegister", errorAlreadyRegister);
+			model.addAttribute("event", event);
+			model.addAttribute("spaceAvailable", spaceAvailable);
+			view="registration";
+			return view;
+		}
+		
+		//cantidad de cupos disponibles insuficiente
+		if(registration.getEvent().getCapacity() <= registrationService.quantityOfRegistrationByEvent(id)) {
+			Boolean errorNoPlace = new Boolean(true);
+			model.addAttribute("errorNoPlace", errorNoPlace);
+			model.addAttribute("event", event);
+			model.addAttribute("spaceAvailable", spaceAvailable);
+			view="registration";
+			return view;
+		}
+		
+		//fecha incorrecta
+		if((registration.getCreatedAt().before(registration.getEvent().getStartRegistrations())) || (registration.getCreatedAt().after(registration.getEvent().getEndRegistrations()))) {
+			Boolean errorBadDate = new Boolean(true);
+			model.addAttribute("errorBadDate", errorBadDate);
+			model.addAttribute("event", event);
+			model.addAttribute("spaceAvailable", spaceAvailable);
+			view="registration";
+			return view;
+		}
+		
+		/*
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
-			if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(idEvento)) {
-				System.out.println(registration.getEvent().getId()+"\n"+registration.getUser());
-				//usuario no registrado en el evento
-				if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
-					//hay lugares libres
-					if((registration.getCreatedAt().after(registration.getEvent().getStartRegistrations())) && (registration.getCreatedAt().before(registration.getEvent().getEndRegistrations()))) {
-						//fecha correcta
-						registrationService.addRegistration(registration);
-						
-						//return "home";
-					}
-				}
+			Float cost = registration.getEvent().getCost();
+			//evento gratis
+			if(cost.equals(0.0)) {
+				
 			}
 		}
 		//evento privado
 		else {
+			
+		}
+		*/
+		/*
+		
+		//evento publico
+		if(!registration.getEvent().isPrivateEvent()) {
+			//espacio disponible
+			if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(id)) {
+				//usuario no registrado en el evento
+				if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
+					//fecha correcta
+					if((registration.getCreatedAt().after(registration.getEvent().getStartRegistrations())) && (registration.getCreatedAt().before(registration.getEvent().getEndRegistrations()))) {
+						registrationService.addRegistration(registration);
+					}
+				}
+			}
+		}
+		
+		//evento privado
+		else {
 			//usuario no registrado en el evento
 			if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
+				//no tiene pago
 				if(!registrationService.isPayment(registration)) {
-					//no tiene pago
 					if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(registration.getEvent().getId())) {
 						//hay lugares libres
 						if(registration.getCreatedAt().after(registration.getEvent().getStartRegistrations()) && registration.getCreatedAt().before(registration.getEvent().getEndRegistrations())) {
@@ -90,7 +148,7 @@ public class RegistrationController {
 							//registrationService.addRegistration(registration);
 							System.out.println("No tiene pago " + registration.getId());
 							Payment p = new Payment();
-							p.setEvent(idEvento);
+							p.setEvent(id);
 							model.addAttribute("payment", p);
 							view = "payment";
 							//return "home";
@@ -100,6 +158,8 @@ public class RegistrationController {
 
 			}
 		}
+		
+		*/
 		
 		return view;
 		

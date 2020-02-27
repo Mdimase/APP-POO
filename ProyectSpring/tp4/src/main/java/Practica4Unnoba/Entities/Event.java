@@ -44,12 +44,12 @@ public class Event {
 	@NotBlank(message = "Place is required")
 	private String place;
 	
-	@NotBlank(message = "Cost is required")
-	@Min(value=1,message="capacidad minima 1")
+	//@NotBlank(message = "Cost is required")
+	//@Min(value=1,message="capacidad minima 1")
 	private int capacity;
 	
-	@NotBlank(message = "Cost is required")
-	@Min(value=0,message="costo minimo 0")
+	//@NotBlank(message = "Cost is required")
+	//@Min(value=0,message="costo minimo 0")
 	private float cost;
 	
 	private boolean privateEvent;
