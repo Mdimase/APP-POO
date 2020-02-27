@@ -1,6 +1,5 @@
 package Practica4Unnoba.Controllers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import Practica4Unnoba.Entities.Event;
 import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
@@ -37,16 +37,10 @@ public class EventController {
 		Usuario user = userService.getUserLogged();
 		
 		List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
-		model.addAttribute("events", events);
+		List<Integer> spacesAvailables = eventService.getSpacesAvailables(events);
 		
-		//calculo los espacios disponibles de cada evento y los guardo en un array
-			ArrayList<Integer> spacesAvailables = new ArrayList<Integer>();
-			for (Event e:events) {
-				int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(e.getId());
-				int spaceAvailable = (e.getCapacity() - numberOfRegistrations);
-				spacesAvailables.add(spaceAvailable);
-				}
-			model.addAttribute("spacesAvailables",spacesAvailables);
+		model.addAttribute("events", events);
+		model.addAttribute("spacesAvailables",spacesAvailables);
 		
 		return "my-events";
 	}
@@ -60,15 +54,9 @@ public class EventController {
 	@GetMapping("/events/")
 	public String findAllEventsOrderByDate(Model model){
 		List<Event> events = eventService.findAllEventsOrderByDate();
-		model.addAttribute("events", events);
+		List<Integer> spacesAvailables = eventService.getSpacesAvailables(events);
 		
-		//calculo los espacios disponibles de cada evento y los guardo en un array
-		ArrayList<Integer> spacesAvailables = new ArrayList<Integer>();
-		for (Event e:events) {
-			int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(e.getId());
-			int spaceAvailable = (e.getCapacity() - numberOfRegistrations);
-			spacesAvailables.add(spaceAvailable);
-		}
+		model.addAttribute("events", events);
 		model.addAttribute("spacesAvailables",spacesAvailables);
 		
 		return "events";
