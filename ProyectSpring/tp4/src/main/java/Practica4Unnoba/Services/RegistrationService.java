@@ -47,8 +47,10 @@ public class RegistrationService {
 	}
 	
 	public boolean isPayment(Registration registration) {
-		for(Payment p : paymentService.findAllPayments()) {
-			if(p.getRegistration().getId() == registration.getId()) {
+		for(Payment p : paymentService.findAllPayments()){
+			Long reg = registration.getId();
+			Long pReg = p.getRegistration().getId();
+			if(reg.equals(pReg)) {
 				return true;
 			}
 		}

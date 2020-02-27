@@ -114,6 +114,10 @@ public class RegistrationController {
 				registrationService.addRegistration(registration);
 				return view;
 			}
+			//evento pago
+			else {
+				
+			}
 		}
 		//evento privado
 		else {
