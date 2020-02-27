@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Payment {
@@ -19,15 +20,11 @@ public class Payment {
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Registration registration;
 	
+	//@NotBlank(message="card is required")
 	private String card;
 	
+	//@NotBlank(message="cardNumber is required")
 	private String cardNumber;
-	
-	@Transient
-	private long event;
-		
-	@Version
-	protected int version;
 	
 	public long getId() {
 		return id;
@@ -53,12 +50,6 @@ public class Payment {
 	public void setCardNumber(String cardNumber) {
 		this.cardNumber = cardNumber;
 	}
-	public long getEvent() {
-		return event;
-	}
-	public void setEvent(long event) {
-		this.event = event;
-	}	
 	
 	
 }

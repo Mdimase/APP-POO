@@ -62,9 +62,6 @@ public class RegistrationController {
 		registration.setEvent(event);
 		registration.setCreatedAt(date);
 		
-		System.out.println(registrationService.isRegistered(registration.getEvent().getId(), user.getId()));
-		System.out.println(registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId()));
-		
 		//se quiere registrar el dueño a su propio evento
 		if(registration.getUser().equals(event.getOwner())) {
 			Boolean errorOwner = new Boolean(true);
@@ -109,14 +106,19 @@ public class RegistrationController {
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
 			Float cost = registration.getEvent().getCost();
+			
 			//evento gratis
 			if(cost.equals(0.0f)) {
 				registrationService.addRegistration(registration);
 				return view;
 			}
+			
 			//evento pago
 			else {
-				
+				Payment payment = new Payment();
+				model.addAttribute("payment", payment);
+				view = "payment";
+				return view;
 			}
 		}
 		//evento privado
