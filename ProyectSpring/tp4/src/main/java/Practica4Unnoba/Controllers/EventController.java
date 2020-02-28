@@ -1,5 +1,6 @@
 package Practica4Unnoba.Controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import Practica4Unnoba.Entities.Event;
+import Practica4Unnoba.Entities.Payment;
 import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
 import Practica4Unnoba.Services.EventService;
+import Practica4Unnoba.Services.PaymentService;
 import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 
@@ -30,6 +33,9 @@ public class EventController {
 	
 	@Autowired
 	private RegistrationService registrationService;
+	
+	@Autowired
+	private PaymentService paymentService;
 	
 	@GetMapping("/myevents")
 	public String findAllMyEvents(Model model) {
@@ -66,12 +72,25 @@ public class EventController {
 	public String getEvent(@PathVariable Long id, Model model) {
 		Event event = eventService.getEvent(id);
 		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(id);
+		
+		//calculo los espacios disponibles
 		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(id);
 		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
+		
+		//busqueda de pagos
+		List<Payment> payments = new ArrayList<Payment>();
+		//busco en cada registracion de pago y guardo dicho pago en un array
+		for(Registration registration : registrations) {
+			if(registration.getEvent().getCost() > 0.0f) {
+				Payment payment = paymentService.getPaymentByRegistration(registration.getId());
+				payments.add(payment);
+			}
+		}
 		
 		model.addAttribute("event", event);
 		model.addAttribute("registrations", registrations);
 		model.addAttribute("spaceAvailable", spaceAvailable);
+		model.addAttribute("payments", payments);
 		
 		return "info";
 	}

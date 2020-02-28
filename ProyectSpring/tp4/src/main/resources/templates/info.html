@@ -28,7 +28,7 @@ table {
 	margin: auto;
 }
 
-table, td {
+table, td, th {
 	text-align: center;
 	border: 1px solid #000;
 }
@@ -63,12 +63,18 @@ td {
 					<tr>
 						<th>User Name</th>
 						<th>Registered At</th>
+						<th>Cost</th>
+						<th>Payment Card</th>
+						<th>Payment Card Number</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="registration : ${registrations}">
 						<td th:text="${registration.user.lastName} + ' ' + ${registration.user.firstName}"></td>
 						<td th:text="${registration.createdAt}"></td>
+						<td th:text="${registration.event.cost > 0 } ? ${registration.event.cost} : 'Free' "></td>
+						<td th:text="${registration.event.cost > 0 } ? ${payments[registrationStat.index].card} : 'Free' "></td>
+						<td th:text="${registration.event.cost > 0 } ? ${payments[registrationStat.index].cardNumber} : 'Free' "></td>
 					</tr>
 				</tbody>
 			</table>

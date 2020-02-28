@@ -31,4 +31,8 @@ public class PaymentService {
 	public List<Payment> findAllPayments(){
 		return paymentRepository.findAll();
 	}
+	
+	public Payment getPaymentByRegistration(Long registrationId) {
+		return paymentRepository.getPaymentByRegistration(registrationId);
+	}
 }
