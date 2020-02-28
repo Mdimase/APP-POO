@@ -21,6 +21,16 @@ public class RegistrationService {
 	@Autowired
 	private PaymentService paymentService;
 	
+	public List<Registration> getAllRegistration (){
+		return registrationRepository.findAll();
+	}
+
+	
+	public List<Registration> findAllRegistrationsByUserId(Long userId){
+		return registrationRepository.findAllByUserId(userId);
+	}
+	
+	
 	public List<Registration> findAllRegistrationsByEventID(Long event_id) {
 		List<Registration> registrations = registrationRepository.findAllByEventID(event_id);
 		return registrations;

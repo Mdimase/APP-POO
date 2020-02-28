@@ -16,6 +16,11 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 	@Query("select r from Registration r where r.event.id = :event_id")
 	public List<Registration> findAllByEventID(@Param("event_id") long event_id);
 	
+	
+	@Query("select r from Registration r where r.user.id = :userId")
+	public List<Registration> findAllByUserId(@Param("userId") long userId);
+	
+	
 	@Query("select count(r) from Registration r where r.user.id = :user_id and r.event.id = :event_id")
 	public int isRegistered(@Param("event_id") long event_id, @Param("user_id") long user_id);
 	

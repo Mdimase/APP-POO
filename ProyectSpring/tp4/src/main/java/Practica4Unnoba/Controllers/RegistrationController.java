@@ -1,7 +1,8 @@
 package Practica4Unnoba.Controllers;
 
-import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -45,6 +46,14 @@ public class RegistrationController {
 		model.addAttribute("event", event);
 		
 		return "registration";
+	}
+	
+	@GetMapping("/myregistrations")
+	public String findMyAllRegistrations(Model model) {
+		List<Registration> registrations = new ArrayList<Registration>();
+		registrations.addAll(registrationService.findAllRegistrationsByUserId(userService.getUserLogged().getId()));
+		model.addAttribute("registrations", registrations);
+		return "my-registrations";
 	}
 	
 	@PostMapping("/add-registration/{id}")
@@ -124,12 +133,12 @@ public class RegistrationController {
 				return view;
 			}
 		}
-		
+		/*
 		//evento privado
 		else {
 			
 		}
-		
+		*/
 		/*
 		
 		//evento publico

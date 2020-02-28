@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Version;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
@@ -53,13 +52,6 @@ public class Event {
 	private float cost;
 	
 	private boolean privateEvent;
-	
-	//private List<Registration> registrations = new ArrayList<>();
-	
-	//private List<Invite> invitations = new ArrayList<>();
-	
-	@Version
-	protected int version;
 	
 	public long getId() {
 		return id;
@@ -121,48 +113,12 @@ public class Event {
 	public void setPrivateEvent(boolean privateEvent) {
 		this.privateEvent = privateEvent;
 	}
-	/*
-	public List<Registration> getRegistrations() {
-		return registrations;
-	}
-	public void setRegistrations(List<Registration> registrations) {
-		this.registrations = registrations;
-	}
 	
-	public List<Invite> getInvitations() {
-		return invitations;
-	}
-	public void setInvitations(List<Invite> invitations) {
-		this.invitations = invitations;
-	}
-	
-	public void addRegistration(Registration registration) {
-		this.registrations.add(registration);
-	}
-	public void removeRegistration(Registration registration) {
-		this.registrations.remove(registration);
-	}
-	
-	public void addInvite(Invite invite) {
-		this.invitations.add(invite);
-	}
-	public void removeInvite(Invite invite) {
-		this.invitations.remove(invite);
-	}
-	
-	public int sizeRegistrations() {
-		return this.registrations.size();
-	}
-	
-	public int sizeInvitations() {
-		return this.invitations.size();
-	}
-	*/
 	@Override
 	public String toString() {
 		return "Event [id=" + id + ", owner=" + owner + ", eventDate=" + eventDate + ", startRegistrations="
 				+ startRegistrations + ", endRegistrations=" + endRegistrations + ", name=" + name + ", place=" + place + ", capacity=" + capacity + ", cost="
-				+ cost + ", privateEvent=" + privateEvent + ", version=" + version + "]";
+				+ cost + ", privateEvent=" + privateEvent + "]";
 	}
 	
 }
