@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,29 +48,26 @@ public class PaymentController {
 	}
 	
 	@PostMapping("/payment/")
-	public String addPayment(@Valid Payment payment,  BindingResult result) {
-		System.out.println("----------------" + payment.getCard());
-		System.out.println("----------------" + Long.valueOf((String)result.getFieldValue("event")));
-	
-		//obtengo el usuario logueado
-		Usuario user = userService.getUserLogged();
+	public String addPayment(@Valid Payment payment,  BindingResult result,@ModelAttribute("eventId")String eventId) {
 		
+		//datos para crear la registracion
+		Usuario user = userService.getUserLogged();
+		Date date = new Date();
+		Event event = eventService.getEvent(Long.parseLong(eventId));
+		
+		//creo y persisto la registracion
 		Registration r = new Registration();
 		r.setUser(user);
-		
-		Date date = new Date();
 		r.setCreatedAt(date);
-		
-		Event event = eventService.getEvent(Long.valueOf((String)result.getFieldValue("event")));
 		r.setEvent(event);
-		
 		registrationService.addRegistration(r);
 		
+		//persisto el pago
 		payment.setRegistration(r);
 		paymentService.addPayment(payment);
-		
 		registrationService.addRegistration(r);
 		
+		//cambiar por la view InscriptionCorrect
 		return "home";
 	}
 	

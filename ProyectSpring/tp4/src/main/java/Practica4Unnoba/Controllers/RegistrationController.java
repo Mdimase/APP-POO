@@ -117,6 +117,8 @@ public class RegistrationController {
 			else {
 				Payment payment = new Payment();
 				model.addAttribute("payment", payment);
+				Long eventId = registration.getEvent().getId();
+				model.addAttribute("eventId", eventId);
 				view = "payment";
 				return view;
 			}

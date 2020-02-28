@@ -22,6 +22,7 @@ div {
 		<label for="cardNumber">Card Number</label>
 		<input type="text" th:field="*{cardNumber}" id="cardNumber" required>
 	</div>
+	<input th:type="hidden" name="eventId" id="eventId" th:value="${eventId}">
 	<button type="submit">Pagar</button>
 </form>
 </body>
