@@ -66,9 +66,8 @@ public class PaymentController {
 		payment.setRegistration(r);
 		paymentService.addPayment(payment);
 		registrationService.addRegistration(r);
-		
-		//cambiar por la view InscriptionCorrect
-		return "home";
+
+		return "correct-inscription";
 	}
 	
 	@GetMapping ("/payment/{id}")

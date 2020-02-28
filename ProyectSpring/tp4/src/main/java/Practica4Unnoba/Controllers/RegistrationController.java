@@ -105,6 +105,7 @@ public class RegistrationController {
 		
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
+			//consigo el wrapper Float para usar el equals
 			Float cost = registration.getEvent().getCost();
 			
 			//evento gratis
@@ -123,6 +124,7 @@ public class RegistrationController {
 				return view;
 			}
 		}
+		
 		//evento privado
 		else {
 			
