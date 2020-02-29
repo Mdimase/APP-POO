@@ -1,11 +1,9 @@
-/*
 package Practica4Unnoba.Entities;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.Version;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 
@@ -21,9 +19,6 @@ public class Invite {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Event evento;
-	
-	@Version
-	protected int version;
 	
 	public long getId() {
 		return id;
@@ -45,4 +40,3 @@ public class Invite {
 	}
 		
 }
-*/

@@ -61,7 +61,7 @@ public class UserController {
 	
 	@GetMapping("/users")
 	public List<Usuario> retrieveAllUsers() {
-		return userService.retrieveAllUsers();
+		return userService.getAllUsers();
 	}
 	
 	@GetMapping("/users/edit/{id}")

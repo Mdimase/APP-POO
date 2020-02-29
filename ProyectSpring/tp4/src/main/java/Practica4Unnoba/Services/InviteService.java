@@ -1,10 +1,6 @@
-/*
 package Practica4Unnoba.Services;
 
-import java.util.List;
-
 import Practica4Unnoba.Repositories.InviteRepository;
-import Practica4Unnoba.Repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,4 +22,3 @@ public class InviteService {
 		inviteRepository.deleteById(id);
 	}
 }
-*/

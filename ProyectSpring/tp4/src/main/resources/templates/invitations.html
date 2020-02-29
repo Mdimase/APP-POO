@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<title>Invitations</title>
+</head>
+<body>
+    <a href="/home">Home</a>
+    <!--
+    <div th:switch="${#lists.size(events)}">
+        <h2 th:case="'0'">No events yet!</h2>
+        <div th:case="*">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date Event</th>
+                        <th>Place</th>
+                        <th>Cost</th>
+                        <th>Private / Public</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="event : ${events}">
+                        <td th:text="${event.name}"></td>
+                        <td th:text="${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${event.place}"></td>
+                        <td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
+                        <td th:text="${event.privateEvent} ? 'Private' : 'Public' "></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+-->
+</body>
+</html>
