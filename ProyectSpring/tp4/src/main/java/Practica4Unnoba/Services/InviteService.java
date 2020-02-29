@@ -2,6 +2,8 @@ package Practica4Unnoba.Services;
 
 import Practica4Unnoba.Repositories.InviteRepository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Service;
@@ -20,5 +22,16 @@ public class InviteService {
 	    
 	public void deleteInvite(@PathVariable Long id) {
 		inviteRepository.deleteById(id);
+	}
+	
+	public List<Invite> getAllInvitations() {
+		return inviteRepository.findAll();
+	}
+	
+	public boolean isInvited(Long eventId,Long userId) {
+		if(inviteRepository.isInvited(eventId, userId) > 0) {
+			return true;
+		}
+		return false;
 	}
 }

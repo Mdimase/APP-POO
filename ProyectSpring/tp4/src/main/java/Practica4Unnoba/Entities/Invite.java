@@ -38,5 +38,15 @@ public class Invite {
 	public void setEvent(Event evento) {
 		this.evento = evento;
 	}
-		
+	
+	public Invite() {
+		super();
+	}
+	
+	public Invite(Usuario usuario, Event evento) {
+		super();
+		this.usuario = usuario;
+		this.evento = evento;
+	}
+	
 }

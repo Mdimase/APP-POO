@@ -32,10 +32,10 @@
         </div>
     </div>
 
-    <form action="#" th:action="@{/addinvite}" method="post">
+    <form action="#" th:action="@{/addinvite/{id}(id=${event.id})}" method="post">
         <select name="username" id="username">
             <option value="--Seleccione">--Seleccione</option>
-            <option th:each="user : ${users}" value="${user.username}" th:text="${user.username}"></option>
+            <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
         </select>
         <input type="submit" value="Enviar">
     </form>

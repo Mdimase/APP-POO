@@ -47,12 +47,35 @@ public class InviteController {
 		return "invitations";
 	}
 	
-	@PostMapping("/addinvite")
-	public String addInvite (Model model) {
-		System.out.println("post controller");
-		System.out.println(model.asMap());
-		//inviteService.addInvite(invite);
-		return "home";
+	@PostMapping("/addinvite/{eventId}")
+	public String addInvite (String username,@PathVariable Long eventId,Model model) {
+		String view  = "home";
+		Usuario user = userService.findUserByUsername(username);
+		Event event = eventService.getEvent(eventId);
+		
+		//ya esta invitado
+		if(inviteService.isInvited(eventId, user.getId())) {
+			String errorAlreadyInvited = "ERROR: Ya tiene una invitacion este usuario";
+			List<Usuario> users = new ArrayList<Usuario>();
+			users.addAll(userService.getAllUsers());
+			users.remove(userService.getUserLogged());
+			model.addAttribute("users", users);
+			model.addAttribute("event", event);
+			model.addAttribute("errorAlreadyInvited", errorAlreadyInvited);
+			view="invitations";
+			return view;
+		}
+		else {
+			Invite invite = new Invite(user,event);
+			inviteService.addInvite(invite);
+			List<Usuario> users = new ArrayList<Usuario>();
+			users.addAll(userService.getAllUsers());
+			users.remove(userService.getUserLogged());
+			model.addAttribute("users", users);
+			model.addAttribute("event", event);
+			view="invitations";
+			return view;
+		}
 	}
 	
 	
