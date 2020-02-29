@@ -3,35 +3,41 @@
 <head>
 <meta charset="utf-8">
 <title>Invitations</title>
+<style>
+    .container {
+	margin: 5px auto;
+	padding: 10px;
+	border: 1px solid #000;
+}
+
+.section {
+	margin: 10px auto;
+	padding: 5px;
+	border: 1px solid #000;
+}
+</style>
 </head>
+
 <body>
     <a href="/home">Home</a>
-    <!--
-    <div th:switch="${#lists.size(events)}">
-        <h2 th:case="'0'">No events yet!</h2>
-        <div th:case="*">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Date Event</th>
-                        <th>Place</th>
-                        <th>Cost</th>
-                        <th>Private / Public</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="event : ${events}">
-                        <td th:text="${event.name}"></td>
-                        <td th:text="${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></td>
-                        <td th:text="${event.place}"></td>
-                        <td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
-                        <td th:text="${event.privateEvent} ? 'Private' : 'Public' "></td>
-                    </tr>
-                </tbody>
-            </table>
+    <h1>Invitations</h1>  
+
+    <div class="container">
+        <div class="section">
+            <h2 th:text="${event.name}"></h2>
+            <p th:text="'Event Date: ' + ${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></p>
+            <p th:text="'Place: ' + ${event.place}"></p>
+            <p th:text="'Cost: ' + (${event.cost > 0} ? ${event.cost} : 'Free')"></p>
+            <p th:text="'Private / Public: ' + (${event.privateEvent} ? 'Private' : 'Public')"></p>
         </div>
     </div>
--->
+
+    <form action="#" th:action="@{/addinvite}" method="post">
+        <select name="username" id="username">
+            <option value="--Seleccione">--Seleccione</option>
+            <option th:each="user : ${users}" value="${user.username}" th:text="${user.username}"></option>
+        </select>
+        <input type="submit" value="Enviar">
+    </form>
 </body>
 </html>

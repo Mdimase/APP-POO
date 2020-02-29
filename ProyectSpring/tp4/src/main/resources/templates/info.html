@@ -94,7 +94,7 @@ td {
 	<form action="#" th:action="@{/myevents}" method="get">
 		<input type="submit" value="My Events">
 	</form>
-	<form action="#" th:action="@{/addinvite}" method="get">
+	<form action="#" th:action="@{/addinvite{id}(id=${event.id})}" method="get">
 		<input type="submit" value="Invitations">
 	</form>
 </div>
