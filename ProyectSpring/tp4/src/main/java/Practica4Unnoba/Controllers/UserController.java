@@ -52,8 +52,8 @@ public class UserController {
 			 view="index";
 		 }
 		 else {
-			 System.out.println("CK Violation");
-			 model.addAttribute("ckViolation",new Boolean(true));
+			 String ckViolation = "ERROR:ya existe un usuario con ese email/username";
+			 model.addAttribute("ckViolation",ckViolation);
 			 view="add-user";
 		 }
 		 return view;

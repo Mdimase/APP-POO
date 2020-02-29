@@ -73,7 +73,7 @@ public class RegistrationController {
 		
 		//se quiere registrar el dueño a su propio evento
 		if(registration.getUser().equals(event.getOwner())) {
-			Boolean errorOwner = new Boolean(true);
+			String errorOwner = "ERROR:sos el dueño, no hace falta registrarse";
 			model.addAttribute("errorOwner", errorOwner);
 			model.addAttribute("event", event);
 			model.addAttribute("spaceAvailable", spaceAvailable);
@@ -83,7 +83,7 @@ public class RegistrationController {
 		
 		//usuario que ya esta inscripto a este evento
 		if(registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
-			Boolean errorAlreadyRegister = new Boolean(true);
+			String errorAlreadyRegister = "ERROR:ya estas inscripto a este evento";
 			model.addAttribute("errorAlreadyRegister", errorAlreadyRegister);
 			model.addAttribute("event", event);
 			model.addAttribute("spaceAvailable", spaceAvailable);
@@ -93,7 +93,7 @@ public class RegistrationController {
 		
 		//cantidad de cupos disponibles insuficiente
 		if(registration.getEvent().getCapacity() <= registrationService.quantityOfRegistrationByEvent(id)) {
-			Boolean errorNoPlace = new Boolean(true);
+			String errorNoPlace = "ERROR:no hay lugar disponible";
 			model.addAttribute("errorNoPlace", errorNoPlace);
 			model.addAttribute("event", event);
 			model.addAttribute("spaceAvailable", spaceAvailable);
@@ -103,7 +103,7 @@ public class RegistrationController {
 		
 		//fecha incorrecta
 		if((registration.getCreatedAt().before(registration.getEvent().getStartRegistrations())) || (registration.getCreatedAt().after(registration.getEvent().getEndRegistrations()))) {
-			Boolean errorBadDate = new Boolean(true);
+			String errorBadDate = "ERROR:fecha invalida";
 			model.addAttribute("errorBadDate", errorBadDate);
 			model.addAttribute("event", event);
 			model.addAttribute("spaceAvailable", spaceAvailable);

@@ -78,8 +78,8 @@ public class EventController {
 		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
 		
 		//busqueda de pagos
-		List<Payment> payments = new ArrayList<Payment>();
 		//busco en cada registracion de pago y guardo dicho pago en un array
+		List<Payment> payments = new ArrayList<Payment>();
 		for(Registration registration : registrations) {
 			if(registration.getEvent().getCost() > 0.0f) {
 				Payment payment = paymentService.getPaymentByRegistration(registration.getId());
