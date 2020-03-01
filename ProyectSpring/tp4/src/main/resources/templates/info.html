@@ -41,6 +41,7 @@ td {
 <body>
 <a href="/home">Home</a>
 <h1>Info</h1>
+<span th:text="${errorHaveRegistrations}"></span>
 <div class="container">
 	<div class="section">
 		<h2 th:text="${event.name}"></h2>
@@ -88,7 +89,7 @@ td {
 	<form action="#" th:action="@{/events/edit/{id}(id=${event.id})}" method="get">
 		<input type="submit" value="Edit">
 	</form>
-	<form action="#" th:action="@{/events/{id}(id=${event.id})}" method="post">
+	<form action="#" th:action="@{/events/delete/{id}(id=${event.id})}" method="post">
 		<input type="submit" value="Delete">
 	</form>
 	<form action="#" th:action="@{/myevents}" method="get">

@@ -117,24 +117,45 @@ public class EventController {
 		return "home";
 	}
 	
-	@PostMapping("/events/{id}")
-	public String deleteEvent(@PathVariable Long id, Model model) {
-		//obtengo el usuario logueado
+	@PostMapping("/events/delete/{eventId}")
+	public String deleteEvent(@PathVariable Long eventId, Model model) {
+		String view = "home";
 		Usuario user = userService.getUserLogged();
-		
-		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
-				eventService.deleteEvent(id);
-				
-				List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
-				model.addAttribute("events", events);
-				
-				return "my-events";
+		List<Registration> registrations = new ArrayList<Registration>();
+		registrations.addAll(registrationService.findAllRegistrationsByEventID(eventId));
+		//si el evento tiene registraciones
+		if(registrations.size() > 0) {
+			String errorHaveRegistrations = "ERROR:este evento tiene registraciones no se puede borrar";
+			Event event = eventService.getEvent(eventId);
+			//calculo los espacios disponibles
+			int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(eventId);
+			int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
+			//consigo los payments
+			List<Payment> payments = new ArrayList<Payment>();
+			for(Registration registration : registrations) {
+				if(registration.getEvent().getCost() > 0.0f) {
+					Payment payment = paymentService.getPaymentByRegistration(registration.getId());
+					payments.add(payment);
+				}
+			}
+			model.addAttribute("payments",payments);
+			model.addAttribute("spaceAvailable", spaceAvailable);
+			model.addAttribute("registrations",registrations);
+			model.addAttribute("event", event);
+			model.addAttribute("errorHaveRegistrations", errorHaveRegistrations);
+			view = "info";
+			return view;
 		}
-		
-		List<Event> events = eventService.findAllEvents();
-		model.addAttribute("events", events);
-		
-		return "events";
+		//no tiene registraciones
+		else {
+			eventService.deleteEvent(eventId);
+			List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
+			List<Integer> spacesAvailables = eventService.getSpacesAvailables(events);
+			model.addAttribute("spacesAvailables", spacesAvailables);
+			model.addAttribute("events", events);
+			view = "my-events";
+			return view;
+		}
 	}
 	
 	@GetMapping("/events/{id}")	

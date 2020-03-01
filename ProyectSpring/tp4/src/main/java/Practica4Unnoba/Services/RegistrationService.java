@@ -56,6 +56,14 @@ public class RegistrationService {
 		return false;
 	}
 	
+	//devuelve true si el evento pasado por parametro tiene alguna registracion
+	public boolean eventHaveRegistration (Long eventId) {
+		if(registrationRepository.eventHaveRegistration(eventId) > 0) {
+			return true;
+		}
+		return false;
+	}
+	
 	public boolean isPayment(Registration registration) {
 		for(Payment p : paymentService.findAllPayments()){
 			Long reg = registration.getId();

@@ -37,6 +37,10 @@ public class EventService {
 		return eventRepository.findAllEventByOwnerOrderByDate(userService.getUserById(UserID));
 	}
 	
+	public boolean haveRegistration (Long eventId) {
+		 return registrationService.eventHaveRegistration(eventId);
+	}
+	
 	//calculo los espacios disponibles de cada evento y los guardo en un array
 	public List<Integer> getSpacesAvailables(List<Event>events){
 		List<Integer> spacesAvailables = new ArrayList<Integer>();
