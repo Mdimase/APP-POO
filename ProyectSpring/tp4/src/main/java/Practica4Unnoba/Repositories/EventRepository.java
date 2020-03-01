@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import Practica4Unnoba.Entities.Event;
+import Practica4Unnoba.Entities.Invite;
 import Practica4Unnoba.Entities.Usuario;
 
 
@@ -17,5 +18,8 @@ public interface EventRepository extends JpaRepository<Event, Long>{
 	
 	@Query("select e from Event e order by e.eventDate")
 	public List<Event> findAllEventsOrderByEventDate();
+	
+	@Query("select e from Invite i inner join Event e on (i.event.id = e.id) where i.user.id = :userId")
+	public List<Event> findAllEventsWithInvitationsByUserId(@Param("userId")long userId);
 	
 }

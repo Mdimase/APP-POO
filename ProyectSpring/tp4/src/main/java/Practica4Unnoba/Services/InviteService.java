@@ -24,8 +24,16 @@ public class InviteService {
 		inviteRepository.deleteById(id);
 	}
 	
+	public Invite findInviteByEventAndUser(Long eventId,Long userId) {
+		return inviteRepository.findInviteByEventAndUser(eventId, userId);
+	}
+	
 	public List<Invite> getAllInvitations() {
 		return inviteRepository.findAll();
+	}
+	
+	public List<Invite> findAllInvitationsByUserId(Long userId){
+		return inviteRepository.findAllInvitationsByUserId(userId);
 	}
 	
 	public boolean isInvited(Long eventId,Long userId) {

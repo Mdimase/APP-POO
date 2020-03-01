@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Invitations</title>
+    <style>
+        h1 {
+            text-align:center;
+        }
+        
+        table, th, td {
+            margin: auto;
+            width: 1280px;
+            border: 1px solid #000;
+        }
+        
+        table {
+            text-align: center;
+        }
+        </style>
+</head>
+<body>
+    <a href="/home">Home</a>
+<h1>My Invitations</h1>
+<div th:switch="${#lists.size(events)}">
+	<h2 th:case="'0'">No events yet!</h2>
+	<div th:case="*">
+		<table>
+			<thead>
+			    <tr>
+			        <th>Name Event</th>  
+			        <th>Date Event</th>
+			        <th>Place</th>
+			        <th>Cost</th>
+                    <th>Private / Public</th>
+                    <th>Owner</th>
+                    <th>Registrations</th>
+                    <th>Delete</th>
+			    </tr>
+			</thead>
+			<tbody>
+			    <tr th:each="event : ${events}">
+			        <td th:text="${event.name}"></td>
+			       	<td th:text="${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></td>
+					<td th:text="${event.place}"></td>
+			        <td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
+                    <td th:text="${event.privateEvent} ? 'Private' : 'Public'"></td>
+                    <td th:text="${event.owner.username}"></td>
+                    <td>regis</td>
+                    <td><form action="#" th:action="@{/deleteinvite/{id}(id=${event.id})}" method="post"><input type="submit" value="Delete"></form></td>
+                    <!--<td><a th:href="@{/events/info/{id}(id=${event.id})}">Info</a></td>
+					<td><a th:href="@{/events/edit/{id}(id=${event.id})}">Edit</a></td>-->
+					
+			    </tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+</html>

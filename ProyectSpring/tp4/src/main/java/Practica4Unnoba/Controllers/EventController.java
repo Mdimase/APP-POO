@@ -124,7 +124,7 @@ public class EventController {
 		List<Registration> registrations = new ArrayList<Registration>();
 		registrations.addAll(registrationService.findAllRegistrationsByEventID(eventId));
 		//si el evento tiene registraciones
-		if(registrations.size() > 0) {
+		if(!registrations.isEmpty()) {
 			String errorHaveRegistrations = "ERROR:este evento tiene registraciones no se puede borrar";
 			Event event = eventService.getEvent(eventId);
 			//calculo los espacios disponibles

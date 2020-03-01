@@ -37,6 +37,10 @@ public class EventService {
 		return eventRepository.findAllEventByOwnerOrderByDate(userService.getUserById(UserID));
 	}
 	
+	public List<Event> findAllEventWithInvitationsByUserId(long userId){
+		return eventRepository.findAllEventsWithInvitationsByUserId(userId);
+	}
+	
 	public boolean haveRegistration (Long eventId) {
 		 return registrationService.eventHaveRegistration(eventId);
 	}

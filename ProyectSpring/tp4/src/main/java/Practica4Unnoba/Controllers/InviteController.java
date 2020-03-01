@@ -29,10 +29,29 @@ public class InviteController {
 	@Autowired
 	private UserService userService;
 
-	@DeleteMapping("/invite/{id}")
-	public void deleteInvite(@PathVariable Long id) {
-		inviteService.deleteInvite(id);
+	@PostMapping("/deleteinvite/{eventId}")
+	public String deleteInvite(@PathVariable Long eventId,Model model) {
+		Usuario userLogged = userService.getUserLogged();
+		Invite invite = inviteService.findInviteByEventAndUser(eventId,userLogged.getId());
+		inviteService.deleteInvite(invite.getId());
+		
+		//consigo lo necesario para renderizar my-invitations
+		List<Event> events = new ArrayList<Event>();
+		events.addAll(eventService.findAllEventWithInvitationsByUserId(userLogged.getId()));
+		model.addAttribute("events", events);
+		return "my-invitations";
+		
 	}	
+	
+	@GetMapping("/myinvitations")
+	public String findAllMyInvitations(Model model) {
+		Usuario userLogged = userService.getUserLogged();
+		//consigo los eventos a los que esta invitado este usuario
+		List<Event> events = new ArrayList<Event>();
+		events.addAll(eventService.findAllEventWithInvitationsByUserId(userLogged.getId()));
+		model.addAttribute("events", events);
+		return "my-invitations";
+	}
 	
 	@GetMapping("/addinvite/{eventId}")
 	public String showAddInviteForm(Model model,@PathVariable Long eventId) {
