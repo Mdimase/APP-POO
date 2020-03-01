@@ -47,7 +47,7 @@
 			        <td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
                     <td th:text="${event.privateEvent} ? 'Private' : 'Public'"></td>
                     <td th:text="${event.owner.username}"></td>
-                    <td>regis</td>
+                    <td><form action="#" th:action="@{/events/registration/{id}(id=${event.id})}" method="GET"><input type="submit" value="Registration"></form></td>
                     <td><form action="#" th:action="@{/deleteinvite/{id}(id=${event.id})}" method="post"><input type="submit" value="Delete"></form></td>
                     <!--<td><a th:href="@{/events/info/{id}(id=${event.id})}">Info</a></td>
 					<td><a th:href="@{/events/edit/{id}(id=${event.id})}">Edit</a></td>-->
