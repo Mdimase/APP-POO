@@ -15,10 +15,10 @@ public class Invite {
 	private long id;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	private Usuario usuario;
+	private Usuario user;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
-	private Event evento;
+	private Event event;
 	
 	public long getId() {
 		return id;
@@ -27,26 +27,26 @@ public class Invite {
 		this.id = id;
 	}
 	public Usuario getUser() {
-		return usuario;
+		return user;
 	}
-	public void setUser(Usuario usuario) {
-		this.usuario = usuario;
+	public void setUser(Usuario user) {
+		this.user = user;
 	}
 	public Event getEvent() {
-		return evento;
+		return event;
 	}
-	public void setEvent(Event evento) {
-		this.evento = evento;
+	public void setEvent(Event event) {
+		this.event = event;
 	}
 	
 	public Invite() {
 		super();
 	}
 	
-	public Invite(Usuario usuario, Event evento) {
+	public Invite(Usuario user, Event event) {
 		super();
-		this.usuario = usuario;
-		this.evento = evento;
+		this.user = user;
+		this.event = event;
 	}
 	
 }
