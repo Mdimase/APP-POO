@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import Practica4Unnoba.Entities.Event;
+import Practica4Unnoba.Entities.Invite;
 import Practica4Unnoba.Entities.Payment;
 import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
 import Practica4Unnoba.Services.EventService;
+import Practica4Unnoba.Services.InviteService;
 import Practica4Unnoba.Services.PaymentService;
 import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
@@ -36,6 +38,9 @@ public class EventController {
 	
 	@Autowired
 	private PaymentService paymentService;
+	
+	@Autowired
+	private InviteService inviteService;
 	
 	@GetMapping("/myevents")
 	public String findAllMyEvents(Model model) {
@@ -72,6 +77,7 @@ public class EventController {
 	public String getEvent(@PathVariable Long id, Model model) {
 		Event event = eventService.getEvent(id);
 		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(id);
+		Usuario userLogged = userService.getUserLogged();
 		
 		//calculo los espacios disponibles
 		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(id);
@@ -87,10 +93,20 @@ public class EventController {
 			}
 		}
 		
+		//consigo las invitaciones enviadas y los datos de esos eventos para mostrarlos
+		List<Invite> invitationsSent = new ArrayList<Invite>();
+		List<Usuario> usersInvitated = new ArrayList<Usuario>();
+		invitationsSent.addAll(inviteService.findInvitationsAtEventSentByOwner(userLogged.getId(),id));
+		for(Invite i : invitationsSent) {
+			usersInvitated.add(userService.getUserById(i.getUser().getId()));
+		}
+		
 		model.addAttribute("event", event);
 		model.addAttribute("registrations", registrations);
 		model.addAttribute("spaceAvailable", spaceAvailable);
 		model.addAttribute("payments", payments);
+		model.addAttribute("usersInvitated", usersInvitated);
+		model.addAttribute("invitationsSent", invitationsSent);
 		
 		return "info";
 	}

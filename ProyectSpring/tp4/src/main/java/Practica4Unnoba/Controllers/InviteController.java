@@ -2,6 +2,8 @@ package Practica4Unnoba.Controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +14,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 import Practica4Unnoba.Entities.Event;
 import Practica4Unnoba.Entities.Invite;
+import Practica4Unnoba.Entities.Payment;
+import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
 import Practica4Unnoba.Services.EventService;
 import Practica4Unnoba.Services.InviteService;
+import Practica4Unnoba.Services.PaymentService;
+import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 
 @Controller
@@ -28,6 +34,12 @@ public class InviteController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private RegistrationService registrationService;
+	
+	@Autowired
+	private PaymentService paymentService;
 
 	@PostMapping("/deleteinvite/{eventId}")
 	public String deleteInvite(@PathVariable Long eventId,Model model) {
@@ -42,6 +54,49 @@ public class InviteController {
 		return "my-invitations";
 		
 	}	
+	
+	@PostMapping("deleteinvitesent/{inviteId}")
+	public String deleteInviteSent(@PathVariable Long inviteId,Model model) {
+		
+		Invite invite = inviteService.getInvite(inviteId);
+		Event event = invite.getEvent();
+		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(event.getId());
+		Usuario userLogged = userService.getUserLogged();
+		
+		inviteService.deleteInvite(inviteId);
+		
+		//calculo los espacios disponibles
+		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(event.getId());
+		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
+		
+		//busqueda de pagos
+		//busco en cada registracion de pago y guardo dicho pago en un array
+		List<Payment> payments = new ArrayList<Payment>();
+		for(Registration registration : registrations) {
+			if(registration.getEvent().getCost() > 0.0f) {
+				Payment payment = paymentService.getPaymentByRegistration(registration.getId());
+				payments.add(payment);
+			}
+		}
+		
+		//consigo las invitaciones enviadas y los datos de esos eventos para mostrarlos
+		List<Invite> invitationsSent = new ArrayList<Invite>();
+		List<Usuario> usersInvitated = new ArrayList<Usuario>();
+		invitationsSent.addAll(inviteService.findInvitationsAtEventSentByOwner(userLogged.getId(),event.getId()));
+		for(Invite i : invitationsSent) {
+			usersInvitated.add(userService.getUserById(i.getUser().getId()));
+		}
+		
+		model.addAttribute("event", event);
+		model.addAttribute("registrations", registrations);
+		model.addAttribute("spaceAvailable", spaceAvailable);
+		model.addAttribute("payments", payments);
+		model.addAttribute("usersInvitated", usersInvitated);
+		model.addAttribute("invitationsSent", invitationsSent);
+		
+		return "info";
+	}
+	
 	
 	@GetMapping("/myinvitations")
 	public String findAllMyInvitations(Model model) {
