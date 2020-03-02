@@ -69,22 +69,4 @@ public class PaymentController {
 
 		return "correct-inscription";
 	}
-	
-	@GetMapping ("/payment/{id}")
-	public String getPayment(@PathVariable Long id, Model model) {
-		Payment payment = paymentService.getPayment(id);
-		
-		model.addAttribute("payment", payment);
-		
-		return "payment";
-	}
-	
-	@GetMapping("/payments")
-	public String getPayments(Model model) {
-		List<Payment> payments = paymentService.findAllPayments();
-		
-		model.addAttribute("payments", payments);
-		
-		return "payments";
-	}
 }

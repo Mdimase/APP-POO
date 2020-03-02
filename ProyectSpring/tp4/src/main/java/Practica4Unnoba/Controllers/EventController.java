@@ -126,11 +126,9 @@ public class EventController {
 	    }
 		//obtengo el usuario logueado
 		Usuario user = userService.getUserLogged();
-		
 		event.setOwner(user);
 		eventService.addEvent(event);
-		
-		return "home";
+		return "redirect:/myevents";
 	}
 	
 	@PostMapping("/events/delete/{eventId}")
@@ -154,23 +152,27 @@ public class EventController {
 					payments.add(payment);
 				}
 			}
+			//consigo las invitaciones enviadas y los datos de esos eventos para mostrarlos
+			List<Invite> invitationsSent = new ArrayList<Invite>();
+			List<Usuario> usersInvitated = new ArrayList<Usuario>();
+			invitationsSent.addAll(inviteService.findInvitationsAtEventSentByOwner(user.getId(),event.getId()));
+			for(Invite i : invitationsSent) {
+				usersInvitated.add(userService.getUserById(i.getUser().getId()));
+			}
 			model.addAttribute("payments",payments);
 			model.addAttribute("spaceAvailable", spaceAvailable);
 			model.addAttribute("registrations",registrations);
 			model.addAttribute("event", event);
 			model.addAttribute("errorHaveRegistrations", errorHaveRegistrations);
+			model.addAttribute("usersInvitated", usersInvitated);
+			model.addAttribute("invitationsSent", invitationsSent);
 			view = "info";
 			return view;
 		}
 		//no tiene registraciones
 		else {
 			eventService.deleteEvent(eventId);
-			List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
-			List<Integer> spacesAvailables = eventService.getSpacesAvailables(events);
-			model.addAttribute("spacesAvailables", spacesAvailables);
-			model.addAttribute("events", events);
-			view = "my-events";
-			return view;
+			return "redirect:/myevents";
 		}
 	}
 	

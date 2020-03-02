@@ -167,14 +167,4 @@ public class RegistrationController {
 			}
 		}
 	}
-	
-	@PostMapping("/registrations")
-	public void addRegistration(@RequestBody Registration registration) {
-		Usuario u = userService.getUserById(registration.getUser().getId());
-		registration.setUser(u);
-		Event e = eventService.getEvent(registration.getEvent().getId());
-		registration.setEvent(e);
-		registrationService.addRegistration(registration);
-	}
-	
 }

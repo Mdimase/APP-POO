@@ -58,24 +58,4 @@ public class UserController {
 		 }
 		 return view;
 	}
-	
-	@GetMapping("/users")
-	public List<Usuario> retrieveAllUsers() {
-		return userService.getAllUsers();
-	}
-	
-	@GetMapping("/users/edit/{id}")
-	public Usuario getUser(@PathVariable Long id) {
-	    return userService.getUserById(id);
-	}
-	
-	@PutMapping("/users/update/{id}")
-	public Usuario replaceUser(@RequestBody Usuario user, @PathVariable Long id) {
-	    return userService.replaceUser(user, id);
-	}
-
-	@DeleteMapping("/users/delete/{id}")
-	void deleteUser(@PathVariable Long id) {
-		  userService.deleteUser(id);
-	  }
 }

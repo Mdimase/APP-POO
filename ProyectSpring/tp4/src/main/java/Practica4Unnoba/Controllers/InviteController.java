@@ -34,67 +34,20 @@ public class InviteController {
 	
 	@Autowired
 	private UserService userService;
-	
-	@Autowired
-	private RegistrationService registrationService;
-	
-	@Autowired
-	private PaymentService paymentService;
 
 	@PostMapping("/deleteinvite/{eventId}")
 	public String deleteInvite(@PathVariable Long eventId,Model model) {
 		Usuario userLogged = userService.getUserLogged();
 		Invite invite = inviteService.findInviteByEventAndUser(eventId,userLogged.getId());
 		inviteService.deleteInvite(invite.getId());
-		
-		//consigo lo necesario para renderizar my-invitations
-		List<Event> events = new ArrayList<Event>();
-		events.addAll(eventService.findAllEventWithInvitationsByUserId(userLogged.getId()));
-		model.addAttribute("events", events);
-		return "my-invitations";
-		
+		return "redirect:/myinvitations";	//importante poner las barras xq es una ruta no una view
 	}	
 	
 	@PostMapping("deleteinvitesent/{inviteId}")
 	public String deleteInviteSent(@PathVariable Long inviteId,Model model) {
-		
-		Invite invite = inviteService.getInvite(inviteId);
-		Event event = invite.getEvent();
-		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(event.getId());
-		Usuario userLogged = userService.getUserLogged();
-		
+		Long eventId = inviteService.getInvite(inviteId).getEvent().getId();
 		inviteService.deleteInvite(inviteId);
-		
-		//calculo los espacios disponibles
-		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(event.getId());
-		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
-		
-		//busqueda de pagos
-		//busco en cada registracion de pago y guardo dicho pago en un array
-		List<Payment> payments = new ArrayList<Payment>();
-		for(Registration registration : registrations) {
-			if(registration.getEvent().getCost() > 0.0f) {
-				Payment payment = paymentService.getPaymentByRegistration(registration.getId());
-				payments.add(payment);
-			}
-		}
-		
-		//consigo las invitaciones enviadas y los datos de esos eventos para mostrarlos
-		List<Invite> invitationsSent = new ArrayList<Invite>();
-		List<Usuario> usersInvitated = new ArrayList<Usuario>();
-		invitationsSent.addAll(inviteService.findInvitationsAtEventSentByOwner(userLogged.getId(),event.getId()));
-		for(Invite i : invitationsSent) {
-			usersInvitated.add(userService.getUserById(i.getUser().getId()));
-		}
-		
-		model.addAttribute("event", event);
-		model.addAttribute("registrations", registrations);
-		model.addAttribute("spaceAvailable", spaceAvailable);
-		model.addAttribute("payments", payments);
-		model.addAttribute("usersInvitated", usersInvitated);
-		model.addAttribute("invitationsSent", invitationsSent);
-		
-		return "info";
+		return "redirect:/events/info/"+eventId;
 	}
 	
 	
@@ -117,7 +70,6 @@ public class InviteController {
 		Event event = eventService.getEvent(eventId);
 		model.addAttribute("users", users);
 		model.addAttribute("event", event);
-		
 		return "invitations";
 	}
 	
@@ -142,15 +94,7 @@ public class InviteController {
 		else {
 			Invite invite = new Invite(user,event);
 			inviteService.addInvite(invite);
-			List<Usuario> users = new ArrayList<Usuario>();
-			users.addAll(userService.getAllUsers());
-			users.remove(userService.getUserLogged());
-			model.addAttribute("users", users);
-			model.addAttribute("event", event);
-			view="invitations";
-			return view;
+			return "redirect:/events/info/"+eventId;
 		}
 	}
-	
-	
 }
