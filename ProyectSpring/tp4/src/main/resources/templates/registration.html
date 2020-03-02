@@ -34,6 +34,7 @@ form {
 	<span th:text="${errorNoPlace}"></span>
 	<!--<span th:if="${errorBadDate == true}">ERROR:fecha invalida</span>-->
 	<span th:text="${errorBadDate}"></span>
+	<span th:text="${errorNoInvitation}"></span>
 	<div class="section">
 		<h2 th:text="${event.name}"></h2>
 		<p th:text="'Event Date: ' + ${#dates.format(event.eventDate, 'dd-MM-yyyy')}"></p>

@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import Practica4Unnoba.Entities.Event;
+import Practica4Unnoba.Entities.Invite;
 import Practica4Unnoba.Entities.Payment;
 import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
 import Practica4Unnoba.Services.EventService;
+import Practica4Unnoba.Services.InviteService;
 import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 
@@ -34,6 +36,9 @@ public class RegistrationController {
 	
 	@Autowired
 	private EventService eventService;
+	
+	@Autowired
+	private InviteService inviteService;
 	
 	@GetMapping("/events/registration/{id}")
 	public String showRegistrationForm(@PathVariable long id, Registration registration, Model model) {
@@ -56,20 +61,23 @@ public class RegistrationController {
 		return "my-registrations";
 	}
 	
-	@PostMapping("/add-registration/{id}")
-	public String addRegistration(@Valid Registration registration, @PathVariable Long id,  BindingResult bindingResult,Model model) {
+	@PostMapping("/add-registration/{eventId}")
+	public String addRegistration(@Valid Registration registration, @PathVariable Long eventId,  BindingResult bindingResult,Model model) {
 		String view = "home";
 		//obtengo el evento al que se quieren inscribir
-		Event event = eventService.getEvent(id);
-		Usuario user = userService.getUserLogged();
+		Event event = eventService.getEvent(eventId);
+		Usuario userLogged = userService.getUserLogged();
 		Date date = new Date();
 		
-		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(id);
+		int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(eventId);
 		int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
 		
-		registration.setUser(user);
+		registration.setUser(userLogged);
 		registration.setEvent(event);
 		registration.setCreatedAt(date);
+		
+		//consigo el wrapper Float para usar el equals
+		Float cost = registration.getEvent().getCost();
 		
 		//se quiere registrar el dueño a su propio evento
 		if(registration.getUser().equals(event.getOwner())) {
@@ -92,7 +100,7 @@ public class RegistrationController {
 		}
 		
 		//cantidad de cupos disponibles insuficiente
-		if(registration.getEvent().getCapacity() <= registrationService.quantityOfRegistrationByEvent(id)) {
+		if(registration.getEvent().getCapacity() <= registrationService.quantityOfRegistrationByEvent(eventId)) {
 			String errorNoPlace = "ERROR:no hay lugar disponible";
 			model.addAttribute("errorNoPlace", errorNoPlace);
 			model.addAttribute("event", event);
@@ -111,11 +119,8 @@ public class RegistrationController {
 			return view;
 		}
 		
-		
 		//evento publico
 		if(!registration.getEvent().isPrivateEvent()) {
-			//consigo el wrapper Float para usar el equals
-			Float cost = registration.getEvent().getCost();
 			
 			//evento gratis
 			if(cost.equals(0.0f)) {
@@ -127,62 +132,40 @@ public class RegistrationController {
 			else {
 				Payment payment = new Payment();
 				model.addAttribute("payment", payment);
-				Long eventId = registration.getEvent().getId();
 				model.addAttribute("eventId", eventId);
 				view = "payment";
 				return view;
 			}
 		}
-		/*
-		//evento privado
-		else {
-			
-		}
-		*/
-		/*
-		
-		//evento publico
-		if(!registration.getEvent().isPrivateEvent()) {
-			//espacio disponible
-			if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(id)) {
-				//usuario no registrado en el evento
-				if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
-					//fecha correcta
-					if((registration.getCreatedAt().after(registration.getEvent().getStartRegistrations())) && (registration.getCreatedAt().before(registration.getEvent().getEndRegistrations()))) {
-						registrationService.addRegistration(registration);
-					}
-				}
-			}
-		}
 		
 		//evento privado
 		else {
-			//usuario no registrado en el evento
-			if(!registrationService.isRegistered(registration.getEvent().getId(), registration.getUser().getId())) {
-				//no tiene pago
-				if(!registrationService.isPayment(registration)) {
-					if(registration.getEvent().getCapacity() > registrationService.quantityOfRegistrationByEvent(registration.getEvent().getId())) {
-						//hay lugares libres
-						if(registration.getCreatedAt().after(registration.getEvent().getStartRegistrations()) && registration.getCreatedAt().before(registration.getEvent().getEndRegistrations())) {
-						//fecha correcta
-							//registrationService.addRegistration(registration);
-							System.out.println("No tiene pago " + registration.getId());
-							Payment p = new Payment();
-							p.setEvent(id);
-							model.addAttribute("payment", p);
-							view = "payment";
-							//return "home";
-						}
-					}
+			//usuario sin invitacion a este evento
+			if(!inviteService.isInvited(eventId,userLogged.getId())){
+				String errorNoInvitation = "ERROR:no tienes invitacion a este evento";
+				model.addAttribute("errorNoInvitation", errorNoInvitation);
+				model.addAttribute("event", event);
+				model.addAttribute("spaceAvailable", spaceAvailable);
+				view="registration";
+				return view;
+			}
+			//usuario con invitacion a este evento
+			else {
+				//evento gratis
+				if(cost.equals(0.0f)) {
+					registrationService.addRegistration(registration);
+					return view;
 				}
-
+				//evento pago
+				else {
+					Payment payment = new Payment();
+					model.addAttribute("payment", payment);
+					model.addAttribute("eventId", eventId);
+					view = "payment";
+					return view;
+				}
 			}
 		}
-		
-		*/
-		
-		return view;
-		
 	}
 	
 	@PostMapping("/registrations")
