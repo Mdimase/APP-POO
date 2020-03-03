@@ -111,13 +111,6 @@ public class EventController {
 		return "info";
 	}
 	
-	@GetMapping("/events/edit/{id}")
-	public String editEvent(@PathVariable Long id, Model model) {
-		model.addAttribute("event", eventService.getEvent(id));
-		
-		return "edit";
-	}
-	
 	@PostMapping("/addevent/")
 	public String addEvent(@Valid Event event, BindingResult result, Model model) {
 		//errores de validacion de formulario
@@ -176,27 +169,48 @@ public class EventController {
 		}
 	}
 	
-	@GetMapping("/events/{id}")	
-	public String replaceEvent(@Valid Event event, BindingResult result, @PathVariable Long id, Model model) {
+	@GetMapping("/events/edit/{id}")
+	public String showEditEventForm(@PathVariable Long id, Model model) {
+		model.addAttribute("event", eventService.getEvent(id));
+		return "edit";
+	}
+	
+	@GetMapping("/events/{eventId}")	
+	public String editEvent(@Valid Event event, BindingResult result, @PathVariable Long eventId, Model model) {
 		if (result.hasErrors()) {
 			return "edit";
 	    }
-		//obtengo el usuario logueado
-		Usuario user = userService.getUserLogged();
+		//evento en BD, datos todavia sin actualizar
+		Event eventBD = eventService.getEvent(eventId);
+		//wrapper costo del evento nuevo a guardar, proveniente de la vista
+		Float cost = event.getCost();
+		//wrraper capacidad del evento nuevo a guardar, proveniente de la vista
+		Integer capacity = event.getCapacity();
 		
-		if(eventService.getEvent(id).getOwner().getId() == user.getId()) {
-			eventService.updateEvent(event , id);
-			
-			List<Event> events = eventService.findAllEventByOwnerIdOrderByDate(user.getId());
-			model.addAttribute("events", events);
-			
-			return "my-events";
+		//si quiero modificar el costo
+		if(!cost.equals(eventBD.getCost())) {
+			//si tiene registraciones no lo dejo editar el costo
+			if(eventService.haveRegistration(eventId)) {
+				String errorHaveRegistrations = "ERROR: no se puede editar el costo debido a que ya hay registraciones";
+				model.addAttribute("errorHaveRegistrations", errorHaveRegistrations);
+				model.addAttribute("event", eventBD);
+				return "edit";
+			}
 		}
+		//si quiero modificar la capacidad
+		if(!capacity.equals(eventBD.getCapacity())) {
+			//si la capacidad que quieren ingresar es menor que la cantidad de registraciones no lo dejo
+			if(capacity < registrationService.quantityOfRegistrationByEvent(eventId)) {
+				String errorLowCapacity = "ERROR: no se puede editar la capacidad a un numero menor que los registrados";
+				model.addAttribute("errorLowCapacity", errorLowCapacity);
+				model.addAttribute("event", eventBD);
+				return "edit";
+			}
+		}
+		//si esta todo bien edito
+		eventService.updateEvent(event , eventId);
+		return "redirect:/events/info/"+eventId;
 		
-		List<Event> events = eventService.findAllEvents();
-		model.addAttribute("events", events);
-		
-		return "events";
 	}
 		
 }

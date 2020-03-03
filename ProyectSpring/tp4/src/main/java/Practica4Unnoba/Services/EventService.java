@@ -77,21 +77,13 @@ public class EventService {
 					ev.setStartRegistrations(event.getStartRegistrations());
 					ev.setEndRegistrations(event.getEndRegistrations());
 					ev.setPlace(event.getPlace());
-					/*
-					if(event.getCapacity() >= registrationService.quantityOfRegistrationByEvent(id)) {
-						ev.setCapacity(event.getCapacity());}
-					if(registrationService.quantityOfRegistrationByEvent(id) == 0) {
-						ev.setCost(event.getCost());}
-					*/
 					ev.setCapacity(event.getCapacity());
 					ev.setCost(event.getCost());
-					
 					ev.setPrivateEvent(event.isPrivateEvent());
 					return eventRepository.save(ev);
 				})
 				.orElseGet(() -> {
 					return eventRepository.save(event);
 				});
-		}
-		
+		}		
 }

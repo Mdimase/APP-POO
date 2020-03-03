@@ -26,6 +26,8 @@ input[type="text"], input[type="date"], input[type="number"] {
 <body>
 <a href="/home">Home</a>
 <h1>Edit Event</h1>
+<span th:text="${errorHaveRegistrations}"></span>
+<span th:text="${errorLowCapacity}"></span>
 <div class="container">
 	<form action="#" th:action="@{/events/{id}(id=${event.id})}" th:object="${event}" method="get">
 		<div>
