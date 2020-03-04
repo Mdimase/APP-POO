@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -24,6 +25,7 @@ import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 
 @Controller
+@RequestMapping("/invitations")
 public class InviteController {
 	
 	@Autowired
@@ -35,15 +37,15 @@ public class InviteController {
 	@Autowired
 	private UserService userService;
 
-	@PostMapping("/deleteinvite/{eventId}")
+	@PostMapping("/delete/{eventId}")
 	public String deleteInvite(@PathVariable Long eventId,Model model) {
 		Usuario userLogged = userService.getUserLogged();
 		Invite invite = inviteService.findInviteByEventAndUser(eventId,userLogged.getId());
 		inviteService.deleteInvite(invite.getId());
-		return "redirect:/myinvitations";	//importante poner las barras xq es una ruta no una view
+		return "redirect:/invitations/my";	//importante poner las barras xq es una ruta no una view
 	}	
 	
-	@PostMapping("deleteinvitesent/{inviteId}")
+	@PostMapping("delete/invitesent/{inviteId}")
 	public String deleteInviteSent(@PathVariable Long inviteId,Model model) {
 		Long eventId = inviteService.getInvite(inviteId).getEvent().getId();
 		inviteService.deleteInvite(inviteId);
@@ -51,7 +53,7 @@ public class InviteController {
 	}
 	
 	
-	@GetMapping("/myinvitations")
+	@GetMapping("/my")
 	public String findAllMyInvitations(Model model) {
 		Usuario userLogged = userService.getUserLogged();
 		//consigo los eventos a los que esta invitado este usuario
@@ -61,7 +63,7 @@ public class InviteController {
 		return "my-invitations";
 	}
 	
-	@GetMapping("/addinvite/{eventId}")
+	@GetMapping("/add/{eventId}")
 	public String showAddInviteForm(Model model,@PathVariable Long eventId) {
 		//guardo todos los usuarios menos el owner de este evento en arreglo
 		List<Usuario> users = new ArrayList<Usuario>();
@@ -73,7 +75,7 @@ public class InviteController {
 		return "invitations";
 	}
 	
-	@PostMapping("/addinvite/{eventId}")
+	@PostMapping("/add/{eventId}")
 	public String addInvite (String username,@PathVariable Long eventId,Model model) {
 		String view  = "home";
 		Usuario user = userService.findUserByUsername(username);

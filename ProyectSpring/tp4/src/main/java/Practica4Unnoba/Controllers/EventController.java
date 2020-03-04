@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import Practica4Unnoba.Entities.Event;
@@ -25,6 +26,7 @@ import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 
 @Controller
+@RequestMapping("/events")
 public class EventController {
 	
 	@Autowired
@@ -42,7 +44,7 @@ public class EventController {
 	@Autowired
 	private InviteService inviteService;
 	
-	@GetMapping("/myevents")
+	@GetMapping("/my")
 	public String findAllMyEvents(Model model) {
 		//obtengo el usuario logueado
 		Usuario user = userService.getUserLogged();
@@ -56,13 +58,13 @@ public class EventController {
 		return "my-events";
 	}
 	
-	@GetMapping("/addevent")
+	@GetMapping("/add")
 	public String showAddEventForm(Event event) {
 		return "add-event";
 	}
 	
 	
-	@GetMapping("/events/")
+	@GetMapping("/")
 	public String findAllEventsOrderByDate(Model model){
 		List<Event> events = eventService.findAllEventsOrderByDate();
 		List<Integer> spacesAvailables = eventService.getSpacesAvailables(events);
@@ -73,7 +75,7 @@ public class EventController {
 		return "events";
 	}
 	
-	@GetMapping("/events/info/{id}")
+	@GetMapping("/info/{id}")
 	public String getEvent(@PathVariable Long id, Model model) {
 		Event event = eventService.getEvent(id);
 		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(id);
@@ -111,7 +113,7 @@ public class EventController {
 		return "info";
 	}
 	
-	@PostMapping("/addevent/")
+	@PostMapping("/add")
 	public String addEvent(@Valid Event event, BindingResult result, Model model) {
 		//errores de validacion de formulario
 		if (result.hasErrors()) {
@@ -121,10 +123,10 @@ public class EventController {
 		Usuario user = userService.getUserLogged();
 		event.setOwner(user);
 		eventService.addEvent(event);
-		return "redirect:/myevents";
+		return "redirect:/events/my";
 	}
 	
-	@PostMapping("/events/delete/{eventId}")
+	@PostMapping("/delete/{eventId}")
 	public String deleteEvent(@PathVariable Long eventId, Model model) {
 		String view = "home";
 		Usuario user = userService.getUserLogged();
@@ -165,17 +167,17 @@ public class EventController {
 		//no tiene registraciones
 		else {
 			eventService.deleteEvent(eventId);
-			return "redirect:/myevents";
+			return "redirect:/events/my";
 		}
 	}
 	
-	@GetMapping("/events/edit/{id}")
+	@GetMapping("/edit/{id}")
 	public String showEditEventForm(@PathVariable Long id, Model model) {
 		model.addAttribute("event", eventService.getEvent(id));
 		return "edit";
 	}
 	
-	@GetMapping("/events/{eventId}")	
+	@PostMapping("/edit/{eventId}")	
 	public String editEvent(@Valid Event event, BindingResult result, @PathVariable Long eventId, Model model) {
 		if (result.hasErrors()) {
 			return "edit";

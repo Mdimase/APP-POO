@@ -29,7 +29,7 @@ input[type="text"], input[type="date"], input[type="number"] {
 <span th:text="${errorHaveRegistrations}"></span>
 <span th:text="${errorLowCapacity}"></span>
 <div class="container">
-	<form action="#" th:action="@{/events/{id}(id=${event.id})}" th:object="${event}" method="get">
+	<form action="#" th:action="@{/events/edit/{id}(id=${event.id})}" th:object="${event}" method="POST">
 		<div>
 			<label for="name">Name</label>
 			<input type="text" th:field="*{name}" id="name" value="${event.name}">

@@ -20,6 +20,10 @@
 
 <body>
     <a href="/home">Home</a>
+    <br><br>
+    <form action="#" th:action="@{/events/info/{id}(id=${event.id})}" method="get">
+        <input type="submit" value="Info">
+    </form>
     <h1>Invitations</h1>  
     <span th:text="${errorAlreadyInvited}"></span>
     <div class="container">
@@ -32,7 +36,7 @@
         </div>
     </div>
 
-    <form action="#" th:action="@{/addinvite/{id}(id=${event.id})}" method="post">
+    <form action="#" th:action="@{/invitations/add/{id}(id=${event.id})}" method="post">
         <select name="username" id="username">
             <option value="--Seleccione">--Seleccione</option>
             <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>

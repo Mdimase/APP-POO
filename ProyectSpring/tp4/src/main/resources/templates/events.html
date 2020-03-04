@@ -54,7 +54,7 @@ table {
 					<!--<td th:text="${event.capacity}"></td>-->
 					<td th:text="${event.cost > 0} ? ${event.cost} : 'Free'"></td>
 					<td th:text="${event.privateEvent} ? 'Private' : 'Public' "></td>
-					<td><a th:href="@{/events/registration/{id}(id=${event.id})}">Registration</a></td>
+					<td><a th:href="@{/registrations/{id}(id=${event.id})}">Registration</a></td>
 				</tr>
 			</tbody>
 		</table>

@@ -8,10 +8,10 @@
 <body>
 <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
 <div>
-	<a href="/myevents">My Events</a> |
+	<a href="/events/my">My Events</a> |
     <a href="/events/">Events</a>     |
-    <a href="/myregistrations">My Registrations</a> |
-    <a href="/myinvitations">My Invitations</a>
+    <a href="/registrations/my">My Registrations</a> |
+    <a href="/invitations/my">My Invitations</a>
 </div>
 <hr>
  <form action="#" th:action="@{/logout}" method="post">

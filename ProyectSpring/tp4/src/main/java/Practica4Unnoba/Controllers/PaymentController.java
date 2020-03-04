@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import Practica4Unnoba.Entities.Event;
@@ -27,6 +28,7 @@ import Practica4Unnoba.Services.PaymentService;
 import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 @Controller
+@RequestMapping("/payment")
 public class PaymentController {
 	
 	@Autowired
@@ -42,12 +44,12 @@ public class PaymentController {
 	private EventService eventService;
 	
 	
-	@GetMapping("/payment/")
+	@GetMapping("/")
 	public String showPaymentForm() {
 		return "payment";
 	}
 	
-	@PostMapping("/payment/")
+	@PostMapping("/")
 	public String addPayment(@Valid Payment payment,  BindingResult result,@ModelAttribute("eventId")String eventId) {
 		
 		//datos para crear la registracion

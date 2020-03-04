@@ -27,7 +27,7 @@ input[type="text"], input[type="date"], input[type="number"] {
 <a href="/home">Home</a>
 <h1>Add Event</h1>
 <div class="container">
-	<form action="#" th:action="@{/addevent/}" th:object="${event}" method="post">
+	<form action="#" th:action="@{/events/add}" th:object="${event}" method="post">
 		<div>
 			<label for="name">Name</label>
 			<input type="text" th:field="*{name}" id="name" required>

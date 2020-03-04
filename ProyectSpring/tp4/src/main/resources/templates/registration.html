@@ -46,7 +46,7 @@ form {
 		<p th:text="'Cost: ' + (${event.cost > 0} ? ${event.cost} : 'Free')"></p>
 		<p th:text="'Private / Public: ' + (${event.privateEvent} ? 'Private' : 'Public')"></p>
 	</div>
-	<form action="#" th:action="@{/add-registration/{id}(id=${event.id})}" th:object="${registation}" method="post">
+	<form action="#" th:action="@{/registrations/add/{id}(id=${event.id})}" th:object="${registation}" method="post">
 		<input type="submit" value="Registration">
 	</form>
 </div>

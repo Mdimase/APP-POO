@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import Practica4Unnoba.Entities.Event;
@@ -26,6 +27,7 @@ import Practica4Unnoba.Services.RegistrationService;
 import Practica4Unnoba.Services.UserService;
 
 @Controller
+@RequestMapping("/registrations")
 public class RegistrationController {
 	
 	@Autowired
@@ -40,7 +42,7 @@ public class RegistrationController {
 	@Autowired
 	private InviteService inviteService;
 	
-	@GetMapping("/events/registration/{id}")
+	@GetMapping("/{id}")
 	public String showRegistrationForm(@PathVariable long id, Registration registration, Model model) {
 		Event event = eventService.getEvent(id);
 		
@@ -53,7 +55,7 @@ public class RegistrationController {
 		return "registration";
 	}
 	
-	@GetMapping("/myregistrations")
+	@GetMapping("/my")
 	public String findMyAllRegistrations(Model model) {
 		List<Registration> registrations = new ArrayList<Registration>();
 		registrations.addAll(registrationService.findAllRegistrationsByUserId(userService.getUserLogged().getId()));
@@ -61,7 +63,7 @@ public class RegistrationController {
 		return "my-registrations";
 	}
 	
-	@PostMapping("/add-registration/{eventId}")
+	@PostMapping("/add/{eventId}")
 	public String addRegistration(@Valid Registration registration, @PathVariable Long eventId,  BindingResult bindingResult,Model model) {
 		String view = "home";
 		//obtengo el evento al que se quieren inscribir
