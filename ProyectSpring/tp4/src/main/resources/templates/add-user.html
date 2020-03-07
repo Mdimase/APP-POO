@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="utf-8">
+	<meta charset="utf-8">
+	<link rel="stylesheet" th:href="@{/css/signUp.css}">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Play">
 <title>Add User</title>
 </head>
 <body>
-<h1>Add User</h1>
 <span th:text="${ckViolation}"></span>
+<div class="signUp">
 <form action="#" th:action="@{/adduser}" th:object="${usuario}" method="post">
-	<label for="username">User Name</label>
-	<input type="text" th:field="*{username}" id="username" placeholder="User Name">
+	<h2>Sign Up</h2>
+	<input type="text" th:field="*{username}" id="username" placeholder="Username" required>
 	<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
-	
-	<label for="email">Email</label>
-	<input type="text" th:field="*{email}" id="email" placeholder="Email">
+	<br><br>
+	<input type="text" th:field="*{email}" id="email" placeholder="E-mail" required>
 	<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
-	
-	<label for="Password">Password</label>
-	<input type="password" th:field="*{password}" id="password">
+	<br><br>
+	<input type="password" th:field="*{password}" id="password" placeholder="Password" required>
 	<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
-	
-	<label for="Role">Role</label>
-	<input type="text" th:field="*{role}" id="role">
+	<br><br>
+	<input type="text" th:field="*{role}" id="role" placeholder="Role" required>
 	<span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
-	
-	<label for="First Name">First Name</label>
-	<input type="text" th:field="*{firstName}" id="firstName">
+	<br><br>
+	<input type="text" th:field="*{firstName}" id="firstName" placeholder="Fisrt Name" required>
 	<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
-	
-	<label for="Last Name">Last Name</label>
-	<input type="text" th:field="*{lastName}" id="lastName">
+	<br><br>
+	<input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name" required>
 	<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
-	<input type="submit" value="Add User">
+	<br><br>
+	<input type="submit" value="Sign Up">
 </form>
+</div>
 </body>
 </html>

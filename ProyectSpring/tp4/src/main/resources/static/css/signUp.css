@@ -8,18 +8,14 @@ body
     background-size: cover; /*ajusta automaticamente al tamaño de pantalla completa*/
 }
 
-.signIn                                     /*tarjeja sign in*/
+.signUp                                    /*tarjeja sign in*/
 {
     background: rgba(44,62,80,0.7);       /*color de fondo de la tarjeta*/
     padding: 40px;                          /*bordes de la tarjeta*/
     width: 300px;                           /*ancho de la tarjeta*/
-    height: 450px;                          /*alto de la tarjeta*/
+    height: 500px;                          /*alto de la tarjeta*/
     margin: auto;
     margin-top: 10%;                       /*margen superior*/
-}
-
-p{
-    text-align: center;
 }
 
 h2
@@ -57,6 +53,22 @@ input[type=email]
 }
 
 input[type=password]
+{
+    width: 80%;
+    color: white;
+    text-align: center;
+    background: transparent;                /*fondo tranparente (igual que el fondo de la tarjeta)*/
+    border: none;                           /*quita los bordes de la caja de texto*/
+    border-bottom: 1px solid white;
+    font-family:sans-serif;
+    font-size: 16px;
+    padding: 10px 0;
+    transition: border 0.5s;
+    outline: none;
+
+}
+
+input[type=text]
 {
     width: 80%;
     color: white;
