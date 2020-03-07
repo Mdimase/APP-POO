@@ -26,16 +26,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/", "/index", "/signup", "/adduser", "add-user").permitAll()		//estas rutas entran sin loguearse
+                .antMatchers("/", "/index", "/signup", "/adduser", "add-user","/login","/css/**","/img/**").permitAll()		//estas rutas entran sin loguearse
                 .anyRequest().authenticated()
                 .and()
             .formLogin()
                 .loginPage("/login")			//esta ruta tiene acceso publico, donde se loguean los usuarios
                 .usernameParameter("email")		//me logueo con email, en lugar de username(por default)
                 .permitAll()
+                .defaultSuccessUrl("/home", true)
                 .and()
             .logout()
-            	.logoutSuccessUrl("/index")		//cierro sesion y lo mando al index
+            	.logoutSuccessUrl("/login")		//cierro sesion y lo mando al index
                 .permitAll();
     }
 
