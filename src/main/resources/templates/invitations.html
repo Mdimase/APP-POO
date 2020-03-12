@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Invitations</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+</head>
+
+<body>
+
+<div class="container-fluid mx-auto my-2">
+
+   	<div th:replace="static :: menu"></div>
+   	
+   	<div class="my-2 p-2 border rounded">
+   	
+   		<h1 class="text-center">Invitations</h1>
+   		
+   		<hr>
+   		
+   		<a class="btn btn-info" href="#" th:href="@{/events/info/{id}(id=${event.id})}"><i class="fa fa-info" aria-hidden="true"></i> Info</a>
+	    
+	    <!--
+	    <div class="mt-4" th:if="${errorAlreadyInvited != null}">
+	    
+	    	<span class="alert alert-danger" role="alert" th:inline="text">[(${errorAlreadyInvited})]</span>
+	    
+	    </div> 
+	    -->
+	    <div th:if="${message != null}" class="mt-4">
+		
+			<span th:classappend="${classMessage}" class="alert" role="alert" th:inline="text">[(${message})]</span>
+		
+		</div>
+	    
+	    <h2 class="text-center" th:inline="text">[[${event.name}]]</h2>
+	    
+	    <p th:inline="text"><i class="fa fa-calendar-day" aria-hidden="true"></i> <b>Event Date:</b>  [[${#dates.format(event.eventDate, 'dd-MM-yyyy')}]]</p>
+	    
+	    <hr>
+	    
+	    <p th:inline="text"><i class="fa fa-map-pin" aria-hidden="true"></i> <b>Place:</b> [[${event.place}]]</p>
+	    
+	    <hr>
+	    
+	    <p th:inline="text"><i class="fa fa-dollar-sign" aria-hidden="true"></i> <b>Cost:</b> [[(${event.cost > 0} ? ${event.cost} : 'Free')]]</p>
+	    
+	    <hr>
+	    
+	    <p th:inline="text"><b>Private / Public:</b> [[(${event.privateEvent} ? 'Private' : 'Public')]]</p>
+	    
+	    <hr>
+	
+	    <form action="#" th:action="@{/invitations/add/{id}(id=${event.id})}" method="post">
+	    
+	    	<div class="form-group">
+	    
+		        <select class="form-control" name="username" id="username">
+		        
+		            <option value="- Select -">- Select -</option>
+		            
+		            <option th:each="user : ${users}" th:value="${user.username}" th:text="${user.username}"></option>
+		            
+		        </select>
+	        
+	        </div>
+	        
+	        <hr>
+	        
+	        <button type="submit" class="btn btn-primary w-100">Submit</button>
+	        
+	    </form>
+    
+    </div>
+    
+</div>
+    
+</body>
+</html>

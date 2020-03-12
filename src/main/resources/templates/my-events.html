@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Events</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+</head>
+<body>
+<div class="container-fluid mx-auto my-2">
+
+	<div th:replace="static :: menu"></div>
+	
+	<div class="my-2 p-2 border rounded">
+		
+		<h1 class="text-center">My Events</h1>
+		
+		<hr>
+		
+		<div th:switch="${#lists.size(events)}">
+			
+			<div th:case="'0'">
+			
+				<h2 class="alert alert-info" role="alert">No events yet!</h2>
+				
+			</div>
+			
+			<div th:case="*" class="table-responsive">
+				
+				<table class="table table-bordered table-striped">
+					
+					<thead>
+					
+					    <tr>
+					    
+					        <th scope="col">Name</th>
+					        
+					        <th scope="col"><i class="fa fa-calendar-day" aria-hidden="true"></i> Date Event</th>
+					        
+					        <th scope="col"><i class="fa fa-calendar-check" aria-hidden="true"></i> Start Registrations</th>
+					        
+					        <th scope="col"><i class="fa fa-calendar-times" aria-hidden="true"></i> End Registrations</th>
+					        
+					        <th scope="col"><i class="fa fa-map-pin" aria-hidden="true"></i> Place</th>
+					        
+					        <th scope="col">Space Available</th>
+					        
+					        <th scope="col"><i class="fa fa-dollar-sign" aria-hidden="true"></i> Cost</th>
+					        
+					        <th scope="col">Private / Public</th>
+					        
+					    </tr>
+					    
+					</thead>
+					
+					<tbody>
+					
+					    <tr th:each="event : ${events}">
+					    
+					        <td th:inline="text">[[${event.name}]]</td>
+					        
+					       	<td th:inline="text">[[${#dates.format(event.eventDate, 'dd-MM-yyyy')}]]</td>
+					       	
+							<td th:inline="text">[[${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}]]</td>
+							
+							<td th:inline="text">[[${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}]]</td>
+							
+							<td th:inline="text">[[${event.place}]]</td>
+							
+							<td th:inline="text">[[${spacesAvailables[eventStat.index]}]]</td> 
+							
+					        <td th:inline="text">[[${event.cost > 0} ? ${event.cost} : 'Free']]</td>
+					        
+							<td th:inline="text">[[${event.privateEvent} ? 'Private' : 'Public']]</td>
+							
+							<td class="text-center"><a class="btn btn-info btn-sm" href="#" th:href="@{/events/info/{id}(id=${event.id})}"><i class="fa fa-info" aria-hidden="true"></i> Info</a></td>
+							
+							<td class="text-center"><a class="btn btn-secondary btn-sm" href="#" th:href="@{/events/edit/{id}(id=${event.id})}"><i class="fa fa-edit" aria-hidden="true"></i> Edit</a></td>
+							
+					    </tr>
+					    
+					</tbody>
+					
+				</table>
+				
+			</div>
+			
+		</div>
+		
+		<hr>
+		
+		 <a class="btn btn-primary" href="/add-event" th:href="@{/events/add}"><i class="fa fa-plus" aria-hidden="true"></i> Add Event</a>
+		 
+	 </div>
+</div>
+</body>
+</html>
