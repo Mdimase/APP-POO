@@ -1,5 +1,6 @@
 package Practica4Unnoba.Services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 
+import Practica4Unnoba.Entities.Invite;
 import Practica4Unnoba.Entities.Usuario;
 import Practica4Unnoba.Repositories.UserRepository;
 
@@ -64,6 +66,15 @@ public class UserService {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		UserDetails loggedUser = (UserDetails) principal;
 		return findUserByEmail(loggedUser.getUsername());		//tener en cuenta que principal guarda como username el email del login
+	}
+	
+	//retorna una lista de usuarios a partir de una lista de invitaciones enviadas
+	public List<Usuario> getUsersInvitated (List<Invite>invitationsSent){
+		List<Usuario> usersInvitated = new ArrayList<Usuario> ();
+		for(Invite i : invitationsSent) {
+			usersInvitated.add(this.getUserById(i.getUser().getId()));
+		}
+		return usersInvitated;
 	}
 	
 	//Encriptación y seteo de la clave al usuario que se registra.

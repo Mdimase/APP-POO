@@ -2,6 +2,7 @@ package Practica4Unnoba.Services;
 
 import Practica4Unnoba.Repositories.PaymentRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.stereotype.Service;
 
 import Practica4Unnoba.Entities.Payment;
+import Practica4Unnoba.Entities.Registration;
 import Practica4Unnoba.Entities.Usuario;
 
 @Service
@@ -18,6 +20,9 @@ public class PaymentService {
 
 	@Autowired
 	private PaymentRepository paymentRepository;
+	
+	@Autowired
+	private EventService eventService;
 	
 	
 	public void addPayment(Payment payment) {
@@ -34,5 +39,17 @@ public class PaymentService {
 	
 	public Payment getPaymentByRegistration(Long registrationId) {
 		return paymentRepository.getPaymentByRegistration(registrationId);
+	}
+	
+	//me devuelve una lista de todos los pagos que tienen las registraciones
+	public List<Payment> getPaymentsByRegistrations(List<Registration> registrations){
+		List<Payment> payments = new ArrayList<Payment>();
+		for(Registration registration : registrations) {
+			if(!eventService.isFree(registration.getEvent())) {
+				Payment payment = this.getPaymentByRegistration(registration.getId());
+				payments.add(payment);
+			}
+		}
+		return payments;
 	}
 }

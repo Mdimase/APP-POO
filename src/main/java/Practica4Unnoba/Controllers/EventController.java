@@ -82,27 +82,17 @@ public class EventController {
 		Usuario userLogged = userService.getUserLogged();
 		int spaceAvailable = eventService.spaceAvailable(event);
 		
+		//obtengo las registraciones de este evento
 		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(id);
 		
 		//busqueda de pagos
-		//busco en cada registro de pago y guardo dicho pago en un array
-		List<Payment> payments = new ArrayList<Payment>();
-		for(Registration registration : registrations) {
-			if(registration.getEvent().getCost() > 0.0f) {
-				Payment payment = paymentService.getPaymentByRegistration(registration.getId());
-				payments.add(payment);
-			}
-		}
+		List<Payment> payments = paymentService.getPaymentsByRegistrations(registrations);
 		
-		//consigo las invitaciones enviadas y los datos de esos eventos para mostrarlos
-		List<Invite> invitationsSent = new ArrayList<Invite>();
-		List<Usuario> usersInvitated = new ArrayList<Usuario>();
+		//consigo las invitaciones enviadas 
+		List<Invite> invitationsSent = inviteService.findInvitationsAtEventSentByOwner(userLogged.getId(),id);
 		
-		invitationsSent.addAll(inviteService.findInvitationsAtEventSentByOwner(userLogged.getId(),id));
-		
-		for(Invite i : invitationsSent) {
-			usersInvitated.add(userService.getUserById(i.getUser().getId()));
-		}
+		//consigo los usuarios invitados a este evento
+		List<Usuario> usersInvitated = userService.getUsersInvitated(invitationsSent);
 		
 		model.addAttribute("event", event);
 		model.addAttribute("registrations", registrations);
