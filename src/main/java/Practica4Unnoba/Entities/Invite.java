@@ -20,12 +20,12 @@ public class Invite {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	//Agregado por lepo
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	//@OnDelete(action=OnDeleteAction.CASCADE)
 	private Usuario user;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	//Agregado por lepo
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	//@OnDelete(action=OnDeleteAction.CASCADE)
 	private Event event;
 	
 	public long getId() {

@@ -85,8 +85,6 @@ public class InviteController {
 	
 	@PostMapping("/add/{eventId}")
 	public String addInvite (String username, @PathVariable Long eventId, Model model, RedirectAttributes redirectAttributes) {
-		String view  = "home";
-		
 		String message = null;
 		String classMessage = null;
 		Event event = eventService.getEvent(eventId);
@@ -104,13 +102,7 @@ public class InviteController {
 			redirectAttributes.addFlashAttribute("message", message);
 			redirectAttributes.addFlashAttribute("classMessage", classMessage);
 			
-			List<Usuario> users = new ArrayList<Usuario>();
-			users.addAll(userService.getAllUsers());
-			users.remove(userService.getUserLogged());
-			model.addAttribute("users", users);
-			model.addAttribute("event", event);
-			view = "redirect:/invitations/add/" + eventId;
-			return view;
+			return "redirect:/invitations/add/" + eventId;
 		}
 		
 		Invite invite = new Invite(user,event);
@@ -120,9 +112,8 @@ public class InviteController {
 		classMessage = "alert-success";
 		redirectAttributes.addFlashAttribute("message", message);
 		redirectAttributes.addFlashAttribute("classMessage", classMessage);
-			
-		view = "redirect:/events/info/" + eventId;
-		return view;
+		
+		return "redirect:/events/info/" + eventId;
 		}
 	}
 

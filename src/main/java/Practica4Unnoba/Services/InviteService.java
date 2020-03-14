@@ -17,6 +17,9 @@ public class InviteService {
 	@Autowired
 	private InviteRepository inviteRepository;
 	
+	@Autowired
+	private UserService userService;
+	
 	public void addInvite(Invite invite) {
 	    inviteRepository.save(invite);
 	}
@@ -27,6 +30,14 @@ public class InviteService {
 	    
 	public void deleteInvite(@PathVariable Long id) {
 		inviteRepository.deleteById(id);
+	}
+	
+	//borra todas las invitaciones enviadas por el usuario de este evento
+	public void deleteInvitationsSent(Long eventId) {
+		List<Invite> invitationsSent = this.findInvitationsAtEventSentByOwner(userService.getUserLogged().getId(), eventId);
+		for(Invite i : invitationsSent) {
+			this.deleteInvite(i.getId());
+		}
 	}
 	
 	public Invite findInviteByEventAndUser(Long eventId,Long userId) {

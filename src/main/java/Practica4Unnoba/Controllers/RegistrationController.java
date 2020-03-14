@@ -84,6 +84,9 @@ public class RegistrationController {
 		//evento gratis
 		if(eventService.isFree(event)) {
 			registrationService.addRegistration(registration);
+			String message = "Te has inscripto al evento correctamente.";
+			redirectAttributes.addFlashAttribute("message", message);
+			view = "redirect:/registrations/my";
 			return view;
 		}
 			

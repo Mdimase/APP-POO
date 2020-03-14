@@ -86,8 +86,10 @@ public class RegistrationService {
 		if(this.validateSpace(registration)!= null) {
 			return this.validateSpace(registration);
 		}
-		if(this.validateHaveInvitation(registration) != null) {
-			return this.validateHaveInvitation(registration);
+		if(event.isPrivateEvent()) {
+			if(this.validateHaveInvitation(registration) != null) {
+				return this.validateHaveInvitation(registration);
+			}
 		}
 		return null;
 	}

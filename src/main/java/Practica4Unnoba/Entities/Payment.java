@@ -22,7 +22,7 @@ public class Payment {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	//Agregado por lepo
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	//@OnDelete(action=OnDeleteAction.CASCADE)
 	private Registration registration;
 	
 	//@NotBlank(message="card is required")

@@ -66,6 +66,55 @@ public class EventService {
 		
 	}
 	
+	//retorna su correspondiente mensaje de error en caso de haberlo, sino null
+	public String validateEdit(Event event) {
+		//wrapper costo del evento nuevo a guardar, proveniente de la vista
+		Float cost = event.getCost();
+		//wrapper capacidad del evento nuevo a guardar, proveniente de la vista
+		Integer capacity = event.getCapacity();
+		//evento en BD, datos todavía sin actualizar
+		Event eventBD = this.getEvent(event.getId());
+		
+		//si quiero modificar el costo
+		if(!cost.equals(eventBD.getCost())) {
+			if(this.validateCost(event)!=null) {
+				return this.validateCost(event);
+			}
+		}
+		
+		//si quiero modificar la capacidad
+		if(!capacity.equals(eventBD.getCapacity())) {
+			if(this.validateCapacity(event)!= null) {
+				return this.validateCapacity(event);
+			}
+		}
+		
+		return null;
+	}
+	
+	//envio error si se quiere modificar un evento con registros
+	public String validateCost(Event event) {
+		String message = null;
+		//si tiene registros no lo dejo editar el costo
+		if(this.haveRegistration(event.getId())) {
+			message = "<b>Error:</b> no se puede editar el costo debido a que ya hay usuarios registrados.";
+		}
+		return message;
+	}
+	
+	//envio error si se quiere modificar un evento con capacidad inapropiada
+	public String validateCapacity(Event event) {
+		String message = null;
+		Integer capacity = event.getCapacity();
+		//si la capacidad que quieren ingresar es menor que la cantidad de registraciones no lo dejo
+		if(capacity < registrationService.quantityOfRegistrationByEvent(event.getId())) {
+			message = "<b>Error:</b> no se puede editar el costo debido a que ya hay usuarios registrados.";
+		}
+		return message;
+	}
+	
+	
+	
 	public void addEvent (Event event) {
 		eventRepository.save(event);
 	}

@@ -113,83 +113,30 @@ public class EventController {
 		
 		//obtengo el usuario logueado
 		Usuario user = userService.getUserLogged();
-		
 		event.setOwner(user);
-		
 		eventService.addEvent(event);
-		
 		return "redirect:/events/my";
 	}
 	
 	@PostMapping("/delete/{eventId}")
 	public String deleteEvent(@PathVariable Long eventId, Model model, RedirectAttributes redirectAttributes) {
-		String view = "home";
-		
-		//Agregado por lepo.
 		String message = null;
 		String classMessage = null;
-		
-		Usuario user = userService.getUserLogged();
-		
-		List<Registration> registrations = new ArrayList<Registration>();
-		
-		registrations.addAll(registrationService.findAllRegistrationsByEventID(eventId));
+		List<Registration> registrations = registrationService.findAllRegistrationsByEventID(eventId);
 		
 		//si el evento tiene inscripciones
 		if(!registrations.isEmpty()) {
-			//String errorHaveRegistrations = "<b>Error:</b> no se puede eliminar este evento ya que tiene usuarios registrados.";
-			
-			//Agregado por lepo.
 			message = "<b>Error:</b> no se puede eliminar este evento ya que tiene usuarios registrados.";
 			classMessage = "alert-danger";
-			
-			Event event = eventService.getEvent(eventId);
-			
-			//calculo los espacios disponibles
-			int numberOfRegistrations = registrationService.quantityOfRegistrationByEvent(eventId);
-			int spaceAvailable = (event.getCapacity() - numberOfRegistrations);
-			
-			//consigo los payments
-			List<Payment> payments = new ArrayList<Payment>();
-			
-			for(Registration registration : registrations) {
-				if(registration.getEvent().getCost() > 0.0f) {
-					Payment payment = paymentService.getPaymentByRegistration(registration.getId());
-					payments.add(payment);
-				}
-			}
-			//consigo las invitaciones enviadas y los datos de esos eventos para mostrarlos
-			List<Invite> invitationsSent = new ArrayList<Invite>();
-			List<Usuario> usersInvitated = new ArrayList<Usuario>();
-			
-			invitationsSent.addAll(inviteService.findInvitationsAtEventSentByOwner(user.getId(),event.getId()));
-			
-			for(Invite i : invitationsSent) {
-				usersInvitated.add(userService.getUserById(i.getUser().getId()));
-			}
-			
-			model.addAttribute("payments",payments);
-			model.addAttribute("spaceAvailable", spaceAvailable);
-			model.addAttribute("registrations",registrations);
-			model.addAttribute("event", event);
-			//model.addAttribute("errorHaveRegistrations", errorHaveRegistrations);
-			model.addAttribute("usersInvitated", usersInvitated);
-			model.addAttribute("invitationsSent", invitationsSent);
-			
-			//Agregado por lepo.
 			redirectAttributes.addFlashAttribute("message", message);
 			redirectAttributes.addFlashAttribute("classMessage", classMessage);
-			
-			view = "info";
-			
-			return view;
+			return "redirect:/events/info/"+eventId;
 		}
-		//no tiene registros
-		else {
-			eventService.deleteEvent(eventId);
-			
-			return "redirect:/events/my";
-		}
+		
+		//borro las invitaciones enviadas a este evento por el usuario logueado, para no violar FK en BD
+		inviteService.deleteInvitationsSent(eventId);
+		eventService.deleteEvent(eventId);
+		return "redirect:/events/my";
 	}
 	
 	@GetMapping("/edit/{id}")
@@ -199,85 +146,32 @@ public class EventController {
 	}
 	
 	@PostMapping("/edit/{eventId}")	
-	public String editEvent(@Valid Event event, BindingResult result, @PathVariable Long Id, Model model, RedirectAttributes redirectAttributes) {
+	public String editEvent(@Valid Event event, BindingResult result, @PathVariable Long eventId, Model model, RedirectAttributes redirectAttributes) {
+		//error de validacion de formulario
 		if (result.hasErrors()) {
 			return "edit";
 	    }
-		
-		//Agregado por lepo.
-		String message = null;
 		String classMessage = null;
 		
-		//evento en BD, datos todavía sin actualizar
-		Event eventBD = eventService.getEvent(Id);
+		//seteo el id al evento para poder buscarlo en BD
+		event.setId(eventId);
 		
-		//wrapper costo del evento nuevo a guardar, proveniente de la vista
-		Float cost = event.getCost();
-		
-		//wrapper capacidad del evento nuevo a guardar, proveniente de la vista
-		Integer capacity = event.getCapacity();
-		
-		//si quiero modificar el costo
-		if(!cost.equals(eventBD.getCost())) {
-			//si tiene registros no lo dejo editar el costo
-			if(eventService.haveRegistration(Id)) {
-				//String errorHaveRegistrations = "<b>Error:</b> no se puede editar el costo debido a que ya hay usuarios registrados.";
-				
-				//Agregado por lepo.
-				message = "<b>Error:</b> no se puede editar el costo debido a que ya hay usuarios registrados.";
-				classMessage = "alert-danger";
-				
-				//model.addAttribute("errorHaveRegistrations", errorHaveRegistrations);
-				model.addAttribute("event", eventBD);
-				
-				/*Agregado por lepo.
-				redirectAttributes.addFlashAttribute("message", message);
-				redirectAttributes.addFlashAttribute("classMessage", classMessage);
-				*/
-				model.addAttribute("message", message);
-				model.addAttribute("classMessage", classMessage);
-				
-				return "edit";
-			}
-		}
-		
-		//si quiero modificar la capacidad
-		if(!capacity.equals(eventBD.getCapacity())) {
-			//si la capacidad que quieren ingresar es menor que la cantidad de registraciones no lo dejo
-			if(capacity < registrationService.quantityOfRegistrationByEvent(Id)) {
-				//String errorLowCapacity = "<b>Error:</b> no se puede editar la capacidad del evento a un número menor a la cantidad de usuarios ya registrados.";
-				
-				//Agregado por lepo.
-				message = "<b>Error:</b> no se puede editar la capacidad del evento a un número menor a la cantidad de usuarios ya registrados.";
-				classMessage = "alert-danger";
-				
-				//model.addAttribute("errorLowCapacity", errorLowCapacity);
-				model.addAttribute("event", eventBD);
-				
-				/*Agregado por lepo.
-				redirectAttributes.addFlashAttribute("message", message);
-				redirectAttributes.addFlashAttribute("classMessage", classMessage);
-				*/
-				model.addAttribute("message", message);
-				model.addAttribute("classMessage", classMessage);
-				
-				return "edit";
-				
-				//return "redirect:/events/edit/" + eventId;
-			}
+		String message = eventService.validateEdit(event);
+		if(message != null) {
+			classMessage = "alert-danger";
+			redirectAttributes.addFlashAttribute("message", message);
+			redirectAttributes.addFlashAttribute("classMessage", classMessage);
+			return "redirect:/events/edit/" + eventId;
 		}
 		
 		//si esta todo bien edito
-		eventService.updateEvent(event , Id);
+		eventService.updateEvent(event , eventId);
 		
-		//Agregado por lepo.
 		message = "Se editó correctamente el evento.";
 		classMessage = "alert-success";
 		redirectAttributes.addFlashAttribute("message", message);
 		redirectAttributes.addFlashAttribute("classMessage", classMessage);
 		
-		return "redirect:/events/info/" + Id;
-		
-	}
-		
+		return "redirect:/events/info/" + eventId;
+	}	
 }

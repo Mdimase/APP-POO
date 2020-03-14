@@ -24,12 +24,12 @@ public class Registration {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	//Agregado por lepo
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	//@OnDelete(action=OnDeleteAction.CASCADE)
 	private Usuario user;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	//Agregado por lepo
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	//@OnDelete(action=OnDeleteAction.CASCADE)
 	private Event event;
 	
 	@Temporal(TemporalType.DATE)

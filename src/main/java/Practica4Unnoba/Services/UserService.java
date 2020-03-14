@@ -90,6 +90,9 @@ public class UserService {
 		if(findUserByEmail(usuario.getEmail())!=null) {
 			return true;
 		}
+		if(this.findUserByUsername(usuario.getUsername()) != null) {
+			return true;
+		}
 		return false;
 	}
 	

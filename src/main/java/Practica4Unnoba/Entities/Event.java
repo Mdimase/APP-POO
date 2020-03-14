@@ -26,7 +26,7 @@ public class Event {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	//Agregado por lepo
-	@OnDelete(action=OnDeleteAction.CASCADE)
+	//@OnDelete(action=OnDeleteAction.CASCADE)
 	private Usuario owner;
 	
 	@Temporal(TemporalType.DATE)
