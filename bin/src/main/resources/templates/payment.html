@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Payment</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+</head>
+<body>
+<div class="container-fluid mx-auto my-2">
+
+	<div th:replace="static :: menu"></div>
+	
+	<div class="my-2 p-2 border rounded">
+	
+		<h1 class="text-center">Payment</h1>
+		
+		<hr>
+		
+		<form action="#" th:action="@{/payment/}" th:object="${payment}" method="post">
+		
+			<div class="form-group">
+			
+				<label for="card"><b>Card</b></label>
+				
+				<input type="text" class="form-control" th:field="*{card}" id="card" required>
+				
+		 	</div>
+			
+			<div class="form-group">
+			
+				<label for="cardNumber"><b>Card Number</b></label>
+				
+				<input type="text" class="form-control" th:field="*{cardNumber}" id="cardNumber" required>
+				
+			</div>
+			
+			<hr>
+			
+			<input th:type="hidden" name="eventId" id="eventId" th:value="${eventId}">
+			
+			<button type="submit" class="btn btn-primary w-100">Pagar</button>
+			
+		</form>
+	</div>
+</div>
+</body>
+</html>

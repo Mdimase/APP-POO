@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Add Event</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+</head>
+<body>
+<div class="container-fluid mx-auto my-2">
+
+	<div th:replace="static :: menu"></div>
+	
+	<div class="my-2 p-2 border rounded">
+	
+		<h1 class="text-center">Add Event</h1>
+		
+		<hr>
+		
+		<form action="#" th:action="@{/events/add}" th:object="${event}" method="post">
+		
+			<!-- Agregué el div form-row -->
+			<div class="form-row">
+			
+				<!-- Agregué la clase col al div form-group -->
+				<div class="col form-group">
+				
+					<label for="name"><b>Name</b></label>
+					
+					<input type="text" class="form-control" th:field="*{name}" id="name" required>
+					
+					<div class="my-4" th:if="${#fields.hasErrors('name')}">
+					
+						<span class="alert alert-danger" role="alert"  th:errors="*{name}"></span>
+						
+					</div>
+					
+			 	</div>
+		 	
+		 	</div>
+		 	
+		 	<div class="form-row">
+		 	
+			 	<div class="col form-group">
+			 	
+					<label for="eventDate"><i class="fa fa-calendar-day" aria-hidden="true"></i> <b>Event Date</b></label>
+					
+					<input type="date" class="form-control" th:field="*{eventDate}" id="eventDate" required>
+					
+				</div>
+				
+				<div class="col form-group">  
+				
+					<label for="startRegistration"><i class="fa fa-calendar-check" aria-hidden="true"></i> <b>Start Registrations</b></label>
+					
+					<input type="date" class="form-control" th:field="*{startRegistrations}" id="startRegistrations" required>
+					
+				</div>
+				
+				<div class="col form-group">
+				
+					<label for="endRegistration"><i class="fa fa-calendar-times" aria-hidden="true"></i> <b>End Registrations</b></label>
+					
+					<input type="date" class="form-control" th:field="*{endRegistrations}" id="endRegistrations" required> 
+					
+				</div>
+			
+			</div>
+			
+			<!-- Agregué el div form-row -->
+			<div class="form-row">
+			
+				<!-- Agregué la clase col al div form-group -->
+				<div class="col form-group">
+				
+					<label for="place"><i class="fa fa-map-pin" aria-hidden="true"></i> <b>Place</b></label>
+					
+					<input type="text" class="form-control" th:field="*{place}" id="place" required>
+					
+					<div class="my-4" th:if="${#fields.hasErrors('place')}">
+					
+						<span class="alert alert-danger" role="alert" th:errors="*{place}"></span>
+					
+					</div>
+					
+				</div>
+			
+			</div>
+			
+			<div class="form-row">
+			
+				<div class="col form-group">
+				
+					<label for="capacity"><b>Capacity</b></label>
+					
+					<input type="number" class="form-control" min="1" th:field="*{capacity}" id="capacity" required>
+					
+					<div class="mt-4" th:if="${#fields.hasErrors('capacity')}">
+				
+						<span class="alert alert-danger" role="alert" th:errors="*{capacity}"></span>
+				
+					</div>
+					
+				</div>
+				
+				<div class="col form-group">
+				
+					<label for="cost"><i class="fa fa-dollar-sign" aria-hidden="true"></i> <b>Cost</b></label>
+					
+					<input type="number" class="form-control" th:field="*{cost}" id="cost" min="0">
+					
+					<div class="mt-4" th:if="${#fields.hasErrors('cost')}">
+					
+						<span class="alert alert-danger" role="alert"  th:errors="*{cost}"></span>
+					
+					</div>
+					
+				</div>
+			
+			</div>
+			
+			<hr>
+			
+			<!-- Agregué el div form-row -->
+			<div class="form-row">
+			
+				<!-- Agregué la clase col al div form-group -->
+				<div class="col form-group">
+					
+					<div class="form-check">
+					
+						<input type="checkbox" class="form-check-input" th:field="*{privateEvent}" id="privateEvent">
+						
+						<label class="form-check-label" for="privateEvent"><b>Private / Public</b></label>
+					
+					</div>
+					
+				</div>
+			
+			</div>
+			
+			<hr>
+			
+			<button type="submit" class="btn btn-primary w-100 p-2">Add Event</button>
+			
+		</form>
+	</div>
+</div>
+</body>
+</html>

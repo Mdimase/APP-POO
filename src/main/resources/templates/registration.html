@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Registration | [[${event.name}]]</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+
+<!-- JS -->
+<script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script src="../static/css/bootstrap-4.4.1-dist/js/bootstrap.min.js" th:src="@{/css/bootstrap-4.4.1-dist/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="container-fluid mx-auto my-2">
+
+	<div th:replace="static :: menu"></div>
+	
+	<div class="my-2 p-2 border rounded">
+	
+		<h1 class="text-center">Registration</h1>
+		
+		<hr>
+		
+		<!-- Alerta que puede cerrarse por el usuario ó se cierra automaticamente luego de unos segundos. -->
+		<div style="display: none" th:if="${message != null}" class="mx-auto my-4 w-50 alert alert-dismissible fade show" th:classappend="${classMessage}" role="alert" id="alert">
+		
+			<span th:inline="text">[(${message})]</span>
+			
+			<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			
+				<span aria-hidden="true">&times;</span>
+				
+			</button>
+			
+		</div>
+		
+		<div class="container-fluid">
+	
+			<div class="my-2 p-2 border rounded">
+		
+				<h2 class="text-center" th:text="${event.name}"></h2>
+			
+				<hr>
+			
+				<div class="container-fluid">
+			
+					<div class="row">
+				
+						<div class="col-sm">
+					
+							<p th:inline="text"><i class="fa fa-calendar-day" aria-hidden="true"></i> <b>Event Date: </b> [[${#dates.format(event.eventDate, 'dd-MM-yyyy')}]]</p>
+					
+						</div>
+					
+						<div class="col-sm">
+					
+							<p th:inline="text"><i class="fa fa-calendar-check" aria-hidden="true"></i> <b>Start Registrations: </b> [[${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}]]</p>
+					
+						</div>
+					
+						<div class="col-sm">
+							
+							<p th:inline="text"><i class="fa fa-calendar-times" aria-hidden="true"></i> <b>End Registrations: </b> [[${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}]]</p>
+					
+						</div>
+					
+					</div>
+				
+					<hr>
+				
+					<div class="row">
+					
+						<div class="col col-lg">
+					
+							<p th:inline="text"><i class="fa fa-map-pin" aria-hidden="true"></i> <b>Place: </b> [[${event.place}]]</p>
+					
+						</div>
+					
+					</div>
+				
+					<hr>
+				
+					<div class="row">
+				
+						<div class="col-sm-4">
+					
+							<p th:inline="text"><b>Capacity: </b> [[${event.capacity}]]</p>
+					
+						</div>
+				
+						<div class="col-sm">
+			
+							<p th:inline="text"><b>Space Available: </b> [[${spaceAvailable}]]</p>
+					
+						</div>
+					
+					</div>
+				
+					<hr>
+				
+					<div class="row">
+				
+						<div class="col col-lg">
+					
+							<p th:inline="text"><i class="fa fa-dollar-sign" aria-hidden="true"></i> <b>Cost: </b> [[(${event.cost > 0} ? ${event.cost} : 'Free')]]</p>
+					
+						</div>
+				
+					</div>
+				
+					<hr>
+				
+					<div class="row">
+				
+						<div class="col col-lg">
+					
+							<p th:inline="text"><b>Private / Public: </b> [[(${event.privateEvent} ? 'Private' : 'Public')]]</p>
+					
+						</div>
+				
+					</div>
+				
+				</div>
+			
+			</div>
+
+			<form action="#" th:action="@{/registrations/add/{id}(id=${event.id})}" th:object="${registation}" method="post">
+				
+				<button type="submit" class="btn btn-primary w-100 p-2">Registration</button>
+		
+			</form>
+	
+		</div>
+		
+	</div>
+	
+</div>
+<script src="../static/js/functions.js" th:src="@{/js/functions.js}"></script>
+</body>
+</html>

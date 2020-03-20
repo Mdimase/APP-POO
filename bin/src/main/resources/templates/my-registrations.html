@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Registrations</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+</head>
+<body>
+<div class="container-fluid mx-auto my-2">
+
+	<div th:replace="static :: menu"></div>
+	
+	<div class="my-2 p-2 border rounded">
+    
+		<h1 class="text-center">My Registrations</h1>
+	
+		<hr>
+		
+		<div class="my-4" th:if="${message != null}">
+	    	
+	    	<span class="alert alert-success p-2" role="alert" th:inline="text">[(${message})]</span>
+	    	
+	    </div>
+	    
+	    <div th:switch="${#lists.size(registrations)}">
+	    
+	    	<div th:case="'0'">
+	    	
+	    		<h2 class="alert alert-info p-2" role="alert">No registrations yet!</h2>
+	    	
+	    	</div>
+			
+			<div th:case="*" class="table-responsive">
+				
+				<table class="table table-bordered table-striped">
+				
+					<thead>
+					
+						<tr>
+						
+							<th scope="col">Name</th>
+							
+							<th scope="col"><i class="fa fa-calendar-day" aria-hidden="true"></i> Date Event</th>
+							
+							<th scope="col"><i class="fa fa-map-pin" aria-hidden="true"></i> Place</th>
+							
+							<th scope="col"><i class="fa fa-dollar-sign" aria-hidden="true"></i> Cost</th>
+							
+							<th scope="col">Private / Public</th>
+							
+						</tr>
+						
+					</thead>
+					
+					<tbody>
+					
+						<tr th:each="registration : ${registrations}">
+						
+							<td th:inline="text">[[${registration.event.name}]]</td>
+							
+							<td th:inline="text">[[${#dates.format(registration.event.eventDate, 'dd-MM-yyyy')}]]</td>
+							
+							<td th:inline="text">[[${registration.event.place}]]</td>
+							
+							<td th:inline="text">[[${registration.event.cost > 0} ? ${registration.event.cost} : 'Free']]</td>
+							
+							<td th:inline="text">[[${registration.event.privateEvent} ? 'Private' : 'Public']]</td>
+							
+						</tr>
+						
+					</tbody>
+					
+				</table>
+				
+			</div>
+			
+		</div>
+		
+	</div>
+	
+</div>	
+</body>
+</html>

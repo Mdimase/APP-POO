@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html xmlns:th="https://www.thymeleaf.org">
+
+<body>
+
+<nav th:fragment="menu" class="navbar navbar-expand-lg navbar-dark bg-dark">
+		
+	<ul class="navbar-nav mr-auto">
+		
+		<li class="nav-item">
+		
+			<a class="nav-link" href="/home"><i class="fa fa-home" aria-hidden="true"></i> Home</a>
+			
+		</li>
+		
+		<li class="nav-item">
+		
+			<a class="nav-link" href="/events" th:href="@{/events/}">Events</a>
+		
+		</li>
+		
+		<li class="nav-item">
+		
+			<a class="nav-link" href="/my-events" th:href="@{/events/my}">My Events</a>
+		
+		</li>
+		
+		<li class="nav-item">
+		
+			<a class="nav-link" href="/my-registrations" th:href="@{/registrations/my}">My registrations</a>
+		
+		</li>
+		
+		<li class="nav-item">
+		
+			<a class="nav-link" href="/my-invitations" th:href="@{/invitations/my}">My Invitations</a>
+		
+		</li>
+		
+	</ul>
+	
+	<form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
+	
+		<button type="submit" class="btn btn-secondary btn-sm my-2 my-sm-0">Sing Out <i class="fa fa-sign-out-alt" aria-hidden="true"></i></button>
+		
+	</form>
+		
+</nav>
+
+</body>
+
+</html>

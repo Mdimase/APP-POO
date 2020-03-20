@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+		
+<title>Add User</title>
+
+<!-- Bootstrap CSS -->      
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+	
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Play">
+
+<!-- JS -->
+<script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script src="../static/css/bootstrap-4.4.1-dist/js/bootstrap.min.js" th:src="@{/css/bootstrap-4.4.1-dist/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!-- Alerta que puede cerrarse por el usuario ó se cierra automaticamente luego de unos segundos. -->
+<div style="display: none; opacity: 0.8;" th:if="${message != null}" class="mx-auto my-4 w-50 alert alert-dismissible fade show" th:classappend="${classMessage}" role="alert" id="alert">
+
+	<span th:inline="text">[(${message})]</span>
+	
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	
+		<span aria-hidden="true">&times;</span>
+		
+	</button>
+	
+</div>
+
+<div class="signUp">
+
+	<form action="#" th:action="@{/adduser}" th:object="${usuario}" method="post">
+	
+		<h2>Sign Up</h2>
+		
+		<input type="text" th:field="*{username}" id="username" placeholder="Username" required>
+		
+		<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{email}" id="email" placeholder="E-mail" required>
+		
+		<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="password" th:field="*{password}" id="password" placeholder="Password" required>
+		
+		<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{role}" id="role" placeholder="Role" required>
+		
+		<span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{firstName}" id="firstName" placeholder="Fisrt Name" required>
+		
+		<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name" required>
+		
+		<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="submit" value="Sign Up">
+		
+	</form>
+	
+</div>
+<script src="../static/js/functions.js" th:src="@{/js/functions.js}"></script>
+</body>
+</html>

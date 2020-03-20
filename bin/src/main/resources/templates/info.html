@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title th:inline="text">Info | [[${event.name}]]</title>
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<!-- Fontawesome -->
+<link rel="stylesheet" href="../static/css/fontawesome-free-5.12.1-web/css/all.css" th:href="@{/css/fontawesome-free-5.12.1-web/css/all.css}">
+</head>
+<body>
+<div class="container-fluid mx-auto my-2">
+
+	<div th:replace="static :: menu"></div>
+	
+	<div class="my-2 p-2 border rounded">
+	
+		<h1 class="text-center">Info</h1>
+		
+		<hr>
+		  
+		<div th:if="${message != null}" class="my-4 ml-3">
+		
+			<span class="alert" th:classappend="${classMessage}" th:inline="text">[(${message})]</span>
+		
+		</div>
+		<!--  
+		<div th:if="${errorHaveRegistrations != null}" class="my-4 ml-3">
+		
+			<span class="alert alert-danger" role="alert" th:inline="text">[(${errorHaveRegistrations})]</span>
+			
+		</div>
+		-->
+		<div class="container-fluid">
+		
+			<div class="my-2 p-2 border rounded">
+			
+				<h2 class="text-center" th:text="${event.name}"></h2>
+				
+				<hr>
+				
+				<div class="container-fluid">
+				
+					<div class="row">
+					
+						<div class="col-sm">
+						
+							<p th:inline="text"><i class="fa fa-calendar-day" aria-hidden="true"></i> <b>Event Date:</b> [[${#dates.format(event.eventDate, 'dd-MM-yyyy')}]]</p>
+						
+						</div>
+						
+						<div class="col-sm">
+						
+							<p th:inline="text"><i class="fa fa-calendar-check" aria-hidden="true"></i> <b>Start Registrations:</b> [[${#dates.format(event.startRegistrations, 'dd-MM-yyyy')}]]</p>
+						
+						</div>
+						
+						<div class="col-sm">
+								
+							<p th:inline="text"><i class="fa fa-calendar-times" aria-hidden="true"></i> <b>End Registrations:</b> [[${#dates.format(event.endRegistrations, 'dd-MM-yyyy')}]]</p>
+						
+						</div>
+						
+					</div>
+					
+					<hr>
+					
+					<div class="row">
+						
+						<div class="col col-lg">
+						
+							<p th:inline="text"><i class="fa fa-map-pin" aria-hidden="true"></i> <b>Place:</b> [[${event.place}]]</p>
+						
+						</div>
+						
+					</div>
+					
+					<hr>
+					
+					<div class="row">
+					
+						<div class="col-sm-4">
+						
+							<p th:inline="text"><b>Capacity: </b> [[${event.capacity}]]</p>
+						
+						</div>
+					
+						<div class="col-sm">
+				
+							<p th:inline="text"><b>Space Available: </b> [[${spaceAvailable}]]</p>
+						
+						</div>
+						
+					</div>
+					
+					<hr>
+					
+					<div class="row">
+					
+						<div class="col col-lg">
+						
+							<p th:inline="text"><i class="fa fa-dollar-sign" aria-hidden="true"></i> <b>Cost: </b> [[(${event.cost > 0} ? ${event.cost} : 'Free')]]</p>
+						
+						</div>
+					
+					</div>
+					
+					<hr>
+					
+					<div class="row">
+					
+						<div class="col col-lg">
+						
+							<p th:inline="text"><b>Private / Public: </b> [[(${event.privateEvent} ? 'Private' : 'Public')]]</p>
+						
+						</div>
+					
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<hr>
+			
+			<div class="my-2 p-2 border rounded">
+			
+				<h2 class="text-center">Registrations</h2>
+				
+				<hr>
+				
+				<div th:switch="${#lists.size(registrations)}">
+				
+					<div th:case="'0'">
+					
+						<h3 class="alert alert-info" role="alert">No registrations yet!</h3>
+					
+					</div>
+					
+					<div th:case="*" class="table-responsive">
+					
+						<table class="table table-bordered table-striped">
+						
+							<thead>
+							
+								<tr>
+									<th><i class="fa fa-user" aria-hidden="true"></i> User Name</th>
+									
+									<th><i class="fa fa-calendar" aria-hidden="true"></i> Registered At</th>
+									
+									<th><i class="fa fa-dollar-sign" aria-hidden="true"></i> Cost</th>
+									
+									<th><i class="fa fa-credit-card" aria-hidden="true"></i> Payment Card</th>
+									
+									<th>Payment Card Number</th>
+									
+								</tr>
+								
+							</thead>
+							
+							<tbody>
+							
+								<tr th:each="registration : ${registrations}">
+								
+									<td th:inline="text">[[${registration.user.lastName}]] [[${registration.user.firstName}]]</td>
+									
+									<td th:inline="text">[[${registration.createdAt}]]</td>
+									
+									<td th:inline="text">[[${registration.event.cost > 0 } ? ${registration.event.cost} : 'Free']]</td>
+									
+									<td th:inline="text">[[${registration.event.cost > 0 } ? ${payments[registrationStat.index].card} : 'Free']]</td>
+									
+									<td th:inline="text">[[${registration.event.cost > 0 } ? ${payments[registrationStat.index].cardNumber} : 'Free']]</td>
+									
+								</tr>
+								
+							</tbody>
+							
+						</table>
+					
+					</div>
+					
+				</div>
+				
+			</div>
+			
+			<hr>
+		
+			<div class="my-2 p-2 border rounded">
+			
+				<h2 class="text-center">Invitations Sent</h2>
+				
+				<hr>
+				
+				<div th:switch="${#lists.size(usersInvitated)}">
+				
+					<div th:case="'0'" class="alert alert-info" role="alert">
+					
+						<h3>No Invitations Sent yet!</h3>
+					
+					</div>
+					
+					<div th:case="*" class="table-responsive">
+				
+						<table class="table table-bordered table-striped">
+						
+							<thead>
+							
+								<tr>
+								
+									<th scope="col"><i class="fa fa-user" aria-hidden="true"></i> User Name</th>
+									
+									<th scope="col">First Name</th>
+									
+									<th scope="col">Last Name</th>
+									
+								</tr>
+								
+							</thead>
+		
+							<tbody>
+							
+								<tr th:each="user : ${usersInvitated}">
+								
+									<td th:inline="text">[[${user.username}]]</td>
+									
+									<td th:inline="text">[[${user.firstName}]]</td>
+									
+									<td th:inline="text">[[${user.lastName}]]</td>
+									
+									<td class="text-center"><form action="#" th:action="@{/invitations/delete/invitesent/{id}(id=${invitationsSent[userStat.index].id})}" method="post"><button type="submit" class="btn btn-danger btn-sm" onClick="return(confirm('¿Desea eliminar la invitación?'))">Delete <i class="fa fa-user-minus" aria-hidden="true"></i></button></form></td>
+									
+								</tr>
+								
+							</tbody>
+							
+						</table>
+					
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+		
+		<hr>
+		
+		<ul class="nav justify-content-center">
+						
+			<li class="nav-item mr-1">
+			
+				<a class="btn btn-secondary btn-sm" href="#" th:href="@{/events/edit/{id}(id=${event.id})}">Edit <i class="fa fa-edit" aria-hidden="true"></i></a>
+					
+			</li>
+				
+			<li class="nav-item mr-1">
+				
+				<a class="btn btn-primary btn-sm" href="#" th:href="@{/invitations/add/{id}(id=${event.id})}">Invitations <i class="fa fa-user-plus" aria-hidden="true"></i></a>	
+					
+			</li>
+			
+			<li class="nav-item">
+			
+				<form action="#" th:action="@{/events/delete/{id}(id=${event.id})}" method="post">
+				
+					<button type="submit" class="btn btn-danger btn-sm" onClick="return(confirm('¿Desea eliminar el evento?'))">Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
+					
+				</form>
+				
+			</li>
+				
+		</ul>
+		
+	</div>
+	
+</div>
+</body>
+</html>

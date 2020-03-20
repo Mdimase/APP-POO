@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+<meta charset="utf-8">
+		
+<title>Login</title>
+
+<!-- Bootstrap CSS -->      
+<link rel="stylesheet" href="../static/css/bootstrap-4.4.1-dist/css/bootstrap.css" th:href="@{/css/bootstrap-4.4.1-dist/css/bootstrap.css}">
+
+<link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Play">
+
+<!-- JS -->
+<script src="../static/js/jquery-3.4.1.min.js" th:src="@{/js/jquery-3.4.1.min.js}"></script>
+<script src="../static/css/bootstrap-4.4.1-dist/js/bootstrap.min.js" th:src="@{/css/bootstrap-4.4.1-dist/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<!-- Alerta que puede cerrarse por el usuario ó se cierra automaticamente luego de unos segundos. -->
+<div style="display: none; opacity: 0.8;" th:if="${param.error}" class="mx-auto my-4 w-25 alert alert-danger alert-dismissible fade show" role="alert" id="alert">
+
+	<span>Invalid e-mail or password.</span>
+	
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	
+		<span aria-hidden="true">&times;</span>
+		
+	</button>
+	
+</div>
+
+<!-- Alerta que puede cerrarse por el usuario ó se cierra automaticamente luego de unos segundos. -->
+<div style="display: none; opacity: 0.8;" th:if="${message != null}" class="mx-auto my-4 w-25 alert alert-dismissible fade show" th:classappend="${classMessage}" role="alert" id="alert">
+
+	<span th:inline="text">[(${message})]</span>
+	
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+	
+		<span aria-hidden="true">&times;</span>
+		
+	</button>
+	
+</div>
+		
+<div class="signIn">
+
+	<form th:action="@{/login}" method="post">
+	
+		<h2>Log In</h2>
+		
+		<input type="email" name="email" placeholder="E-mail">
+		
+		<br>
+		   
+		<br>
+		
+		<input type="password" name="password" placeholder="Password"> 
+		
+		<br>
+		
+		<br>
+		
+    	<input type="submit" value="Sign In"/>
+    	
+	</form>
+	
+	<br>
+	
+	<br>
+	
+	<p>Don't Have an Account?</p>
+	
+	<form action="#" th:action="@{/signup}" method="get">
+	
+		<input type="submit" value="Sign Up">
+		
+	</form>
+
+</div>
+<script src="../static/js/functions.js" th:src="@{/js/functions.js}"></script>
+</body>
+</html>

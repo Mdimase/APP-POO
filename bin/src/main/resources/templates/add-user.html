@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+	
+<link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+	
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Play">
+	
+<title>Add User</title>
+
+</head>
+<body>
+<div class="my-4 ml-2" th:if="${message != null}">
+		
+	<!-- 
+	<span th:text="${ckViolation}"></span> 
+	-->
+	<span class="alert" th:classappend="${classMessage}" style="opacity: 0.8;" th:inline="text">[(${message})]</span>
+		
+</div>
+
+<div class="signUp">
+
+	<form action="#" th:action="@{/adduser}" th:object="${usuario}" method="post">
+	
+		<h2>Sign Up</h2>
+		
+		<input type="text" th:field="*{username}" id="username" placeholder="Username" required>
+		
+		<span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{email}" id="email" placeholder="E-mail" required>
+		
+		<span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="password" th:field="*{password}" id="password" placeholder="Password" required>
+		
+		<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{role}" id="role" placeholder="Role" required>
+		
+		<span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{firstName}" id="firstName" placeholder="Fisrt Name" required>
+		
+		<span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="text" th:field="*{lastName}" id="lastName" placeholder="Last Name" required>
+		
+		<span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+		
+		<br>
+		
+		<br>
+		
+		<input type="submit" value="Sign Up">
+		
+	</form>
+	
+</div>
+</body>
+</html>
